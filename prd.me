@@ -1,0 +1,2070 @@
+# NEXORA V0.1 — Foundation & UI
+
+Build the first version of **NEXORA**, a premium Web3 On-Chain Intelligence Terminal.
+
+NEXORA's tagline:
+
+> **Read the chain. Understand the flow.**
+
+The goal of this phase is ONLY to build the frontend foundation and polished UI using mock data.
+
+Do NOT implement real blockchain integration, wallet connection, trading execution, authentication, or database yet.
+
+---
+
+## 1. Tech Stack
+
+Use:
+
+* Next.js with App Router
+* TypeScript
+* Tailwind CSS
+* shadcn/ui
+* Lucide React icons
+* Framer Motion
+* Recharts or another suitable chart library
+* ESLint
+* Vercel-compatible architecture
+
+Use clean, reusable React components.
+
+Do not introduce unnecessary dependencies.
+
+---
+
+## 2. Design Direction
+
+NEXORA should feel like a modern professional financial/Web3 terminal.
+
+Visual references:
+
+* Bloomberg Terminal
+* TradingView
+* Modern DeFi dashboards
+* Premium developer tools
+
+Avoid making it look like a generic crypto landing page.
+
+### Theme
+
+Dark-first interface.
+
+Use:
+
+* near-black background
+* dark gray cards
+* subtle borders
+* white/gray typography
+* restrained green accent for positive financial values
+* red only where necessary for negative values
+* subtle glow, NOT excessive neon
+
+The UI should feel sophisticated, technical, minimal, and data-dense.
+
+---
+
+## 3. Typography
+
+Use a clean sans-serif font for normal UI text.
+
+Use a monospace font for:
+
+* prices
+* percentages
+* wallet addresses
+* transaction hashes
+* numerical market data
+
+Numbers should visually resemble a professional trading terminal.
+
+---
+
+# 4. Landing Page
+
+Create a premium landing page at:
+
+`/`
+
+Hero:
+
+```text
+NEXORA
+
+ON-CHAIN INTELLIGENCE TERMINAL
+
+Read the chain.
+Understand the flow.
+
+Real-time blockchain analytics
+for the next generation of traders.
+
+[ Launch Terminal ]
+[ Explore Demo ]
+```
+
+The hero should have a subtle animated background.
+
+Possible visual elements:
+
+* animated grid
+* subtle glowing nodes
+* abstract blockchain connections
+* moving market data
+* subtle particle effects
+
+Use Framer Motion for animation.
+
+Keep the animation lightweight and professional.
+
+Do NOT make the page look like a gaming website.
+
+---
+
+## 5. Landing Page Sections
+
+Below the hero, create:
+
+### Market Preview
+
+Show mock market data:
+
+```text
+BTC     $104,821.42     +3.21%
+ETH       $3,921.42     +5.82%
+SOL         $182.41     +8.21%
+```
+
+### Feature Preview
+
+Three feature cards:
+
+```text
+01
+MARKET INTELLIGENCE
+
+Track market movements,
+volume and liquidity.
+
+02
+SMART MONEY
+
+Explore wallet activity
+and on-chain flows.
+
+03
+PORTFOLIO
+
+Understand wallet performance
+and asset allocation.
+```
+
+### Terminal Preview
+
+Create a large dashboard preview showing:
+
+* market chart
+* token prices
+* volume
+* portfolio value
+* recent transactions
+
+This can use mock data.
+
+### CTA
+
+At the bottom:
+
+```text
+Understand the chain.
+Not just the price.
+
+[ Launch NEXORA ]
+```
+
+---
+
+# 6. Dashboard
+
+Create:
+
+`/dashboard`
+
+This should be the main application interface.
+
+Desktop layout:
+
+```text
+┌─────────────────────────────────────────────────────────┐
+│ NEXORA                         Search       Connect      │
+├──────────────┬──────────────────────────────────────────┤
+│              │                                          │
+│ Overview     │                                          │
+│ Markets      │             MAIN CONTENT                 │
+│ Smart Money  │                                          │
+│ Portfolio    │                                          │
+│ Wallet       │                                          │
+│ Trading      │                                          │
+│ Risk         │                                          │
+│              │                                          │
+└──────────────┴──────────────────────────────────────────┘
+```
+
+Create a reusable:
+
+* Sidebar
+* Navbar
+* Search
+* Connect Wallet button placeholder
+* Page container
+
+The sidebar should support active navigation states.
+
+---
+
+# 7. Sidebar
+
+Items:
+
+```text
+OVERVIEW
+
+Overview
+Markets
+Smart Money
+Portfolio
+
+TOOLS
+
+Wallet Explorer
+Paper Trading
+Risk Terminal
+```
+
+For V0.1, only these pages need to actually exist:
+
+```text
+/dashboard
+/markets
+```
+
+Other menu items can display a polished "Coming Soon" state.
+
+Do not create fake functionality.
+
+---
+
+# 8. Dashboard Overview
+
+At:
+
+`/dashboard`
+
+Create:
+
+## Header
+
+```text
+Overview
+
+Market and on-chain activity at a glance.
+```
+
+## Market Stats
+
+Create cards:
+
+```text
+TOTAL MARKET CAP
+$3.82T
++2.41%
+
+24H VOLUME
+$124.8B
++8.12%
+
+BTC DOMINANCE
+58.4%
+-0.42%
+
+ACTIVE CHAINS
+12
++1
+```
+
+---
+
+# 9. Market Cards
+
+Show:
+
+```text
+BTC
+$104,821.42
++3.21%
+
+ETH
+$3,921.42
++5.82%
+
+SOL
+$182.41
++8.21%
+
+AAVE
+$241.82
++6.12%
+```
+
+Use mock data.
+
+Do NOT call external APIs yet.
+
+---
+
+# 10. Main Market Chart
+
+Create a large interactive-looking chart.
+
+Title:
+
+```text
+MARKET PERFORMANCE
+```
+
+Tabs:
+
+```text
+1H
+4H
+1D
+1W
+1M
+```
+
+Default:
+
+`1D`
+
+Use realistic mock price data.
+
+The chart should include:
+
+* smooth line
+* tooltip
+* axis labels
+* subtle grid
+* current price
+* percentage change
+
+Make the chart responsive.
+
+---
+
+# 11. Market Activity
+
+Create a table:
+
+```text
+MARKET ACTIVITY
+
+TOKEN      PRICE        1H       24H       VOLUME
+
+BTC        $104,821      +0.4%    +3.2%     $42.1B
+ETH          $3,921      +0.8%    +5.8%     $21.4B
+SOL            $182      +1.2%    +8.2%      $8.1B
+AAVE           $241      +0.8%    +6.1%      $1.2B
+UNI             $12      -0.2%    +2.4%       $824M
+```
+
+Make table rows interactive visually.
+
+Clicking a token can navigate to:
+
+`/markets/[symbol]`
+
+Create the route with mock data.
+
+---
+
+# 12. Recent On-Chain Activity
+
+Create a panel:
+
+```text
+RECENT ACTIVITY
+
+0x71...92A
+BUY
+ETH
+$42,120
+2m ago
+
+0x82...11B
+BUY
+AAVE
+$18,420
+8m ago
+
+0x44...90C
+SELL
+UNI
+$31,200
+14m ago
+```
+
+This is MOCK DATA ONLY.
+
+Clearly structure the data so it can later be replaced by blockchain API data.
+
+---
+
+# 13. Markets Page
+
+Create:
+
+`/markets`
+
+Header:
+
+```text
+Markets
+
+Explore digital asset market data.
+```
+
+Create:
+
+* search input
+* chain filter
+* market table
+* sorting UI
+* token cards
+
+Filters:
+
+```text
+All
+Ethereum
+Base
+Arbitrum
+Polygon
+```
+
+For now, filters can operate against local mock data.
+
+---
+
+# 14. Token Detail Page
+
+Create:
+
+`/markets/[symbol]`
+
+Example:
+
+`/markets/ETH`
+
+Display:
+
+```text
+ETH
+
+$3,921.42
+
++5.82%
+
+Market Cap
+$472B
+
+Volume
+$21.4B
+
+Liquidity
+$8.2B
+```
+
+Create:
+
+* price chart
+* market statistics
+* mock on-chain statistics
+* holder preview
+* recent activity
+
+Example:
+
+```text
+ON-CHAIN ACTIVITY
+
+Active Wallets
+842K
+
+Transactions
+1.24M
+
+Whale Transactions
+2,421
+```
+
+Again, everything is mock data.
+
+---
+
+# 15. Mock Data Architecture
+
+Do NOT hardcode market values directly inside UI components.
+
+Create a structured mock-data layer.
+
+For example:
+
+```text
+lib/
+  mock-data/
+    markets.ts
+    wallets.ts
+    activity.ts
+    charts.ts
+```
+
+Create TypeScript types:
+
+```text
+MarketAsset
+MarketStats
+WalletActivity
+ChartData
+```
+
+The UI should consume these types.
+
+The architecture must make it easy to replace mock data with real APIs later.
+
+---
+
+# 16. Components
+
+Use reusable components.
+
+Suggested structure:
+
+```text
+components/
+├── layout/
+│   ├── app-sidebar
+│   ├── app-navbar
+│   └── page-container
+│
+├── dashboard/
+│   ├── market-stat-card
+│   ├── market-overview
+│   ├── market-chart
+│   ├── market-table
+│   └── activity-feed
+│
+├── markets/
+│   ├── market-filter
+│   ├── market-table
+│   └── token-header
+│
+└── ui/
+    └── shadcn components
+```
+
+Do not create huge monolithic page components.
+
+---
+
+# 17. Animations
+
+Use Framer Motion carefully.
+
+Add:
+
+* page entrance animation
+* sidebar transitions
+* card hover
+* table row hover
+* chart appearance
+* number transitions where appropriate
+* landing hero animation
+
+Animations should be:
+
+* subtle
+* fast
+* professional
+
+Avoid excessive animations.
+
+---
+
+# 18. Responsive Design
+
+Must work on:
+
+* desktop
+* laptop
+* tablet
+* mobile
+
+Desktop:
+
+```text
+sidebar + content
+```
+
+Mobile:
+
+```text
+top navbar
+content
+bottom/mobile navigation or collapsible sidebar
+```
+
+Tables should become horizontally scrollable or transform into mobile-friendly cards.
+
+Do not simply shrink desktop UI.
+
+---
+
+# 19. Accessibility
+
+Implement:
+
+* semantic HTML
+* keyboard navigation
+* visible focus states
+* accessible buttons
+* proper aria labels
+* sufficient text contrast
+
+Do not sacrifice accessibility for visual effects.
+
+---
+
+# 20. Performance
+
+Optimize for Vercel.
+
+Requirements:
+
+* use Next.js Server Components where appropriate
+* use Client Components only when interaction is required
+* avoid unnecessary client-side JavaScript
+* lazy-load heavy chart/visual components if appropriate
+* optimize fonts
+* optimize images
+* avoid huge animation libraries beyond the required ones
+
+Do not add a database yet.
+
+Do not add authentication yet.
+
+Do not add blockchain RPC yet.
+
+Do not add wallet connection yet.
+
+Do not add external market APIs yet.
+
+---
+
+# 21. Navigation
+
+Implement:
+
+```text
+/
+    ↓
+Landing Page
+
+Launch Terminal
+    ↓
+/dashboard
+
+Markets
+    ↓
+/markets
+
+Token
+    ↓
+/markets/[symbol]
+```
+
+For unfinished modules:
+
+```text
+Smart Money
+Portfolio
+Wallet Explorer
+Paper Trading
+Risk Terminal
+```
+
+Show:
+
+```text
+COMING SOON
+
+This module is part of the NEXORA roadmap.
+```
+
+---
+
+# 22. Error / Empty States
+
+Create polished reusable states for:
+
+* empty data
+* loading
+* error
+* coming soon
+
+Example:
+
+```text
+NO DATA AVAILABLE
+
+Market data could not be loaded.
+
+[ Retry ]
+```
+
+Even though V0.1 uses mock data, create the components so they can later be reused with real API requests.
+
+---
+
+# 23. Code Quality
+
+Follow these rules:
+
+* strict TypeScript
+* no `any` unless absolutely necessary
+* reusable components
+* clear naming
+* no duplicated UI logic
+* no unnecessary abstractions
+* clean folder structure
+* ESLint must pass
+* production build must pass
+
+Before finishing, run:
+
+```bash
+npm run lint
+npm run build
+```
+
+Fix all errors.
+
+---
+
+# 24. Vercel Compatibility
+
+The project must be deployable to Vercel without special server configuration.
+
+Do not depend on:
+
+* local filesystem persistence
+* long-running processes
+* Docker
+* localhost services
+* environment variables that are not actually needed
+
+Create `.env.example` only if environment variables are introduced.
+
+---
+
+# 25. Important Scope Restriction
+
+This is **NEXORA V0.1**.
+
+DO NOT implement:
+
+* real wallet connection
+* MetaMask
+* WalletConnect
+* real blockchain RPC
+* real transaction fetching
+* real trading
+* real-money transactions
+* smart contract interaction
+* authentication
+* database
+* AI analysis
+* real market API
+
+Those belong to later phases.
+
+Focus entirely on:
+
+> **Premium UI + architecture + mock data + responsive experience.**
+
+---
+
+# 26. Final Acceptance Criteria
+
+The project is complete when:
+
+* [ ] `/` contains polished NEXORA landing page
+* [ ] `/dashboard` contains working dashboard
+* [ ] `/markets` contains market table
+* [ ] `/markets/[symbol]` contains token detail
+* [ ] Sidebar navigation works
+* [ ] Responsive layout works
+* [ ] Mock data is separated from UI
+* [ ] Charts work
+* [ ] Filters work locally
+* [ ] Search works locally
+* [ ] Hover/transition animations work
+* [ ] Loading/empty/error states exist
+* [ ] No TypeScript errors
+* [ ] ESLint passes
+* [ ] Production build passes
+* [ ] No real blockchain integration yet
+* [ ] No authentication yet
+* [ ] No database yet
+
+---
+
+## Final UI Goal
+
+When someone opens NEXORA, the first impression should be:
+
+> **"This looks like a real Web3 financial product."**
+
+Not:
+
+> "This looks like a student CRUD project."
+
+Prioritize visual polish, spacing, typography, information hierarchy, responsiveness, and component quality over adding unnecessary features.
+
+Build the complete V0.1 now.
+
+
+
+# NEXORA V0.2 — Real Market Data & API Layer
+
+You are continuing development of the existing **NEXORA** project.
+
+NEXORA is a premium Web3 On-Chain Intelligence Terminal.
+
+Tagline:
+
+> **Read the chain. Understand the flow.**
+
+The project already has a completed V0.1 foundation with:
+
+* Next.js 16 App Router
+* TypeScript
+* Tailwind CSS
+* Dark terminal aesthetic
+* Monospace financial numbers
+* Restrained green/red colors
+* Landing page `/`
+* Dashboard `/dashboard`
+* Markets `/markets`
+* Dynamic token detail `/markets/[symbol]`
+* Recharts charts
+* Mock data architecture
+* Coming Soon pages
+* Responsive UI
+* `npm run lint` passing
+* `npm run build` passing
+
+Your task is to implement **NEXORA V0.2 — Real Market Data & API Layer**.
+
+---
+
+# 1. IMPORTANT SCOPE
+
+This phase is ONLY about replacing market-related mock data with real market data.
+
+Do NOT implement:
+
+* wallet connection
+* MetaMask
+* WalletConnect
+* wagmi
+* viem
+* blockchain RPC
+* smart contracts
+* on-chain transaction indexing
+* Smart Money
+* portfolio wallet analysis
+* real trading
+* paper trading
+* authentication
+* AI
+* database
+
+Those belong to later phases.
+
+Do not redesign the existing NEXORA UI unnecessarily.
+
+Preserve the V0.1 visual identity and existing routes.
+
+---
+
+# 2. PRIMARY GOAL
+
+Current architecture:
+
+```text
+Mock Data
+    ↓
+React Components
+    ↓
+NEXORA UI
+```
+
+Change it to:
+
+```text
+External Market API
+        ↓
+Next.js Server API
+        ↓
+Market Service
+        ↓
+Data Normalization
+        ↓
+NEXORA UI
+```
+
+The browser should NOT directly call CoinGecko.
+
+Use Next.js server-side routes/services as the API boundary.
+
+---
+
+# 3. DATA PROVIDER
+
+Use **CoinGecko API** for market data.
+
+Prefer the current CoinGecko API structure/documentation available to the project.
+
+Do not hardcode API keys into source code.
+
+If the selected CoinGecko endpoint does not require an API key, allow the application to work without one.
+
+If the selected endpoint requires an API key, use:
+
+```env
+COINGECKO_API_KEY=
+```
+
+Create:
+
+```text
+.env.example
+```
+
+Never commit real API keys.
+
+Do not expose private API keys through `NEXT_PUBLIC_*`.
+
+---
+
+# 4. API ARCHITECTURE
+
+Create a clean service layer.
+
+Suggested structure:
+
+```text
+src/
+├── app/
+│   └── api/
+│       └── market/
+│           ├── route.ts
+│           └── [symbol]/
+│               └── route.ts
+│
+├── lib/
+│   ├── api/
+│   │   └── market.ts
+│   │
+│   ├── mock-data/
+│   │   ├── markets.ts
+│   │   ├── charts.ts
+│   │   └── activity.ts
+│   │
+│   ├── types.ts
+│   │
+│   └── utils/
+│
+└── components/
+```
+
+Adapt this structure to the existing project if equivalent files already exist.
+
+Do NOT duplicate existing types or mock-data unnecessarily.
+
+---
+
+# 5. TYPES
+
+Inspect the existing:
+
+```text
+src/lib/types.ts
+```
+
+before modifying it.
+
+Extend the existing types instead of creating duplicate definitions.
+
+Create or maintain appropriate types such as:
+
+```ts
+MarketAsset
+MarketStats
+MarketChartPoint
+MarketResponse
+MarketDetailResponse
+ApiError
+```
+
+Example conceptual structure:
+
+```ts
+type MarketAsset = {
+  id: string;
+  symbol: string;
+  name: string;
+  image?: string;
+  price: number;
+  marketCap: number;
+  volume24h: number;
+  change1h?: number;
+  change24h: number;
+  rank?: number;
+};
+```
+
+Use actual TypeScript types appropriate to the API response.
+
+Avoid:
+
+```ts
+any
+```
+
+unless absolutely unavoidable.
+
+---
+
+# 6. MARKET API SERVICE
+
+Create a server-side market service:
+
+```text
+src/lib/api/market.ts
+```
+
+Responsibilities:
+
+* fetch market data
+* fetch token detail
+* fetch historical market data
+* normalize external API responses
+* handle API errors
+* handle missing values
+* handle rate limits
+* provide typed return values
+
+The React components should NOT know the raw CoinGecko response structure.
+
+Bad:
+
+```text
+Component
+  ↓
+CoinGecko raw JSON
+```
+
+Good:
+
+```text
+Component
+  ↓
+NEXORA Market type
+  ↓
+Market service
+  ↓
+CoinGecko
+```
+
+---
+
+# 7. MARKET ENDPOINT
+
+Create:
+
+```text
+GET /api/market
+```
+
+It should return normalized market data.
+
+Example conceptual response:
+
+```json
+{
+  "data": [
+    {
+      "id": "bitcoin",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": 104821.42,
+      "marketCap": 2000000000000,
+      "volume24h": 42000000000,
+      "change24h": 3.21,
+      "rank": 1
+    }
+  ],
+  "source": "coingecko",
+  "updatedAt": "..."
+}
+```
+
+The exact response structure may be adjusted to fit the existing application.
+
+---
+
+# 8. SUPPORTED MARKET ASSETS
+
+At minimum support:
+
+```text
+Bitcoin
+Ethereum
+Solana
+Aave
+Uniswap
+```
+
+Use their proper CoinGecko identifiers internally.
+
+Do NOT rely on ticker symbols alone when querying the provider.
+
+For example:
+
+```text
+BTC → bitcoin
+ETH → ethereum
+SOL → solana
+```
+
+Create a central asset mapping/configuration instead of scattering IDs throughout components.
+
+Example concept:
+
+```ts
+const supportedAssets = {
+  BTC: "bitcoin",
+  ETH: "ethereum",
+  SOL: "solana",
+  AAVE: "aave",
+  UNI: "uniswap",
+};
+```
+
+---
+
+# 9. DASHBOARD INTEGRATION
+
+Update:
+
+```text
+/dashboard
+```
+
+so market-related values come from the real API.
+
+Replace mock values for:
+
+* BTC price
+* ETH price
+* SOL price
+* AAVE price
+* market cap
+* volume
+* 24h change
+
+The existing visual design must remain consistent.
+
+Do NOT remove existing cards.
+
+---
+
+# 10. MARKET TABLE
+
+Update:
+
+```text
+/markets
+```
+
+to use real market data.
+
+The table should display:
+
+```text
+TOKEN
+PRICE
+1H
+24H
+VOLUME
+MARKET CAP
+```
+
+If the API does not provide 1H change for the selected endpoint:
+
+* use a suitable supported endpoint if available, OR
+* display `—`
+
+Do NOT fabricate 1H values.
+
+---
+
+# 11. MARKET SEARCH
+
+The existing local search/filter behavior should continue working.
+
+Search should operate on the fetched normalized market data.
+
+Example:
+
+```text
+Search:
+eth
+```
+
+should show:
+
+```text
+Ethereum
+```
+
+Do not make a new API request for every keystroke.
+
+Use the already-fetched dataset for local filtering unless there is a strong reason otherwise.
+
+---
+
+# 12. CHAIN FILTER
+
+The current V0.1 chain filter should remain functional.
+
+Important:
+
+CoinGecko market data is not inherently equivalent to DEX chain/pair data.
+
+Therefore, do NOT falsely claim that a token belongs to a specific chain based solely on the CoinGecko market response.
+
+For V0.2:
+
+Keep the existing chain filter as a UI capability if it already exists, but do not fabricate chain-specific market data.
+
+If necessary, change the filter behavior to:
+
+```text
+All
+```
+
+and clearly mark chain-specific market filtering as a future feature.
+
+Do not invent data.
+
+---
+
+# 13. TOKEN DETAIL API
+
+Create:
+
+```text
+GET /api/market/[symbol]
+```
+
+Example:
+
+```text
+/api/market/ETH
+/api/market/BTC
+/api/market/SOL
+```
+
+The endpoint should:
+
+1. validate the symbol
+2. map symbol → provider ID
+3. fetch token data
+4. normalize the response
+5. return typed data
+
+Unknown symbol:
+
+```text
+/api/market/UNKNOWN
+```
+
+should return an appropriate 404 response.
+
+---
+
+# 14. TOKEN DETAIL PAGE
+
+Update:
+
+```text
+/markets/[symbol]
+```
+
+to use real data.
+
+Example:
+
+```text
+ETH
+
+$3,921.42
++5.82%
+
+Market Cap
+...
+
+24H Volume
+...
+
+Market Rank
+...
+```
+
+Do not display fabricated values.
+
+If a metric is unavailable:
+
+```text
+—
+```
+
+instead of fake data.
+
+---
+
+# 15. HISTORICAL CHART
+
+Replace the token detail chart mock data with real historical market data.
+
+Create an appropriate service function.
+
+Example:
+
+```ts
+getMarketHistory(symbol, range)
+```
+
+Support:
+
+```text
+1D
+7D
+30D
+```
+
+If practical, also support:
+
+```text
+1Y
+```
+
+The existing UI tabs can remain.
+
+The chart should use normalized data such as:
+
+```ts
+type MarketChartPoint = {
+  timestamp: number;
+  price: number;
+};
+```
+
+Do not expose the raw provider response to the chart component.
+
+---
+
+# 16. CHART INTERACTION
+
+Maintain the existing Recharts functionality.
+
+The chart should support:
+
+* tooltip
+* responsive sizing
+* time labels
+* price formatting
+* loading state
+* error state
+
+Do not overcomplicate the chart.
+
+Keep the terminal aesthetic.
+
+---
+
+# 17. ON-CHAIN METRICS
+
+IMPORTANT:
+
+The existing token detail page may contain metrics such as:
+
+```text
+Active Wallets
+Transactions
+Whale Transactions
+```
+
+Do NOT replace these with fake real-looking values.
+
+These are blockchain/on-chain metrics and are outside the scope of basic CoinGecko market data.
+
+For V0.2, either:
+
+```text
+—
+```
+
+or show a clear:
+
+```text
+Coming in V0.4
+```
+
+state.
+
+Do not present mock numbers as real data.
+
+---
+
+# 18. RECENT ON-CHAIN ACTIVITY
+
+Same rule.
+
+Do not pretend the existing:
+
+```text
+BUY ETH $42,120
+BUY AAVE $18,420
+```
+
+is real blockchain activity.
+
+For V0.2:
+
+Either preserve the component behind a clearly labeled:
+
+```text
+DEMO ACTIVITY
+```
+
+or convert it into a:
+
+```text
+ON-CHAIN ACTIVITY
+Coming in V0.4
+```
+
+state.
+
+Prefer the second option if it fits the existing UI.
+
+---
+
+# 19. LOADING STATES
+
+Implement polished loading states.
+
+For example:
+
+```text
+MARKET DATA
+
+████████████
+████████
+████████████
+```
+
+Use skeleton components.
+
+Do not make the entire page blank while fetching data.
+
+The sidebar/navbar should remain usable.
+
+---
+
+# 20. ERROR STATES
+
+Create reusable API error handling.
+
+Example:
+
+```text
+MARKET DATA UNAVAILABLE
+
+Unable to retrieve market data right now.
+
+[ Retry ]
+```
+
+Errors should not crash the entire application.
+
+---
+
+# 21. RATE LIMIT HANDLING
+
+CoinGecko may rate-limit requests.
+
+Handle:
+
+```text
+429
+```
+
+gracefully.
+
+Show a useful UI state.
+
+Do not implement aggressive automatic retry loops.
+
+Avoid repeatedly hammering the API.
+
+---
+
+# 22. FALLBACK TO MOCK DATA
+
+VERY IMPORTANT:
+
+Keep the existing mock-data architecture.
+
+If the real API fails, the application may fall back to mock data where appropriate.
+
+However, the UI must indicate that the displayed data is fallback/demo data.
+
+For example:
+
+```text
+DEMO DATA
+```
+
+or:
+
+```text
+Using fallback market data
+```
+
+Do NOT silently show stale/fake data as if it were live.
+
+Implement a clean abstraction such as:
+
+```text
+Real API
+   ↓
+Success → real data
+
+Failure
+   ↓
+Fallback → mock data + demo indicator
+```
+
+Do not put fallback logic inside every React component.
+
+Keep it inside the data/service layer.
+
+---
+
+# 23. CACHING
+
+Implement server-side caching appropriate for market data.
+
+The goal is:
+
+```text
+User A
+   ↓
+API
+   ↓
+CoinGecko
+
+User B
+   ↓
+API
+   ↓
+cached result
+```
+
+Avoid calling the external provider on every request.
+
+Use Next.js-supported caching/revalidation mechanisms.
+
+Suggested starting point:
+
+```text
+Market list:
+30–60 seconds
+
+Token detail:
+30–60 seconds
+
+Historical data:
+5 minutes
+```
+
+Choose appropriate values based on the endpoint.
+
+Do not claim the data is truly real-time.
+
+Use terminology such as:
+
+```text
+Market data
+Updated X seconds ago
+```
+
+---
+
+# 24. LAST UPDATED
+
+Display a small timestamp where appropriate:
+
+```text
+Updated 24s ago
+```
+
+or:
+
+```text
+Updated just now
+```
+
+The timestamp should come from the fetched data/request timing where practical.
+
+Do not fake the timestamp.
+
+---
+
+# 25. REFRESH
+
+Add a subtle refresh control where useful.
+
+Example:
+
+```text
+Market Data
+Updated 32s ago
+
+[ Refresh ]
+```
+
+Refresh should request the latest available data without causing uncontrolled repeated requests.
+
+---
+
+# 26. API SECURITY
+
+Never expose:
+
+```text
+COINGECKO_API_KEY
+```
+
+to the client.
+
+Never use:
+
+```text
+NEXT_PUBLIC_COINGECKO_API_KEY
+```
+
+for private credentials.
+
+All provider requests that require secrets must happen server-side.
+
+---
+
+# 27. ENVIRONMENT
+
+Create:
+
+```text
+.env.example
+```
+
+Example:
+
+```env
+COINGECKO_API_KEY=
+```
+
+Only include variables that are actually required.
+
+Do not create fake environment variables.
+
+Do not hardcode secrets.
+
+---
+
+# 28. VERCEL COMPATIBILITY
+
+The application must remain deployable on Vercel.
+
+Do not introduce:
+
+* custom Node servers
+* persistent local processes
+* filesystem databases
+* Docker requirements
+* long-running workers
+* localhost dependencies
+
+Use Next.js server-side APIs and Vercel-compatible patterns.
+
+---
+
+# 29. UI REQUIREMENTS
+
+Do NOT redesign the application from scratch.
+
+Preserve:
+
+* NEXORA branding
+* dark terminal aesthetic
+* typography
+* spacing system
+* sidebar
+* navbar
+* cards
+* chart styling
+* responsive behavior
+* animations
+
+Only modify UI where required for:
+
+* loading
+* errors
+* live data
+* updated timestamps
+* fallback state
+
+---
+
+# 30. DATA SOURCE INDICATOR
+
+Add a subtle indicator to market pages:
+
+```text
+● MARKET DATA
+Source: CoinGecko
+```
+
+or a similarly understated UI.
+
+Do not make it visually dominant.
+
+This helps communicate that the application is using real external data.
+
+---
+
+# 31. COMPONENT ARCHITECTURE
+
+Keep responsibilities separated.
+
+Recommended:
+
+```text
+UI
+ ↓
+Hooks / data fetching
+ ↓
+Next.js API
+ ↓
+Market service
+ ↓
+CoinGecko
+```
+
+Do not place provider-specific API logic inside:
+
+```text
+MarketTable.tsx
+MarketCard.tsx
+MarketChart.tsx
+```
+
+Those components should receive normalized data.
+
+---
+
+# 32. CLIENT/SERVER BOUNDARY
+
+Use Server Components where possible.
+
+Use Client Components only when needed for:
+
+* interactive charts
+* search
+* filters
+* refresh controls
+* client-side interactions
+
+Do not turn the entire dashboard into a Client Component unnecessarily.
+
+---
+
+# 33. MOCK DATA POLICY
+
+Existing files under:
+
+```text
+src/lib/mock-data/
+```
+
+must not be deleted unnecessarily.
+
+They remain useful for:
+
+* fallback
+* UI development
+* tests
+* future development
+
+Clearly distinguish:
+
+```text
+REAL MARKET DATA
+```
+
+from:
+
+```text
+DEMO / FALLBACK DATA
+```
+
+---
+
+# 34. TESTING
+
+After implementation run:
+
+```bash
+npm run lint
+npm run build
+```
+
+Fix all errors.
+
+Also manually verify:
+
+```text
+/
+```
+
+```text
+/dashboard
+```
+
+```text
+/markets
+```
+
+```text
+/markets/ETH
+```
+
+```text
+/markets/BTC
+```
+
+```text
+/markets/UNKNOWN
+```
+
+Verify:
+
+* real data loads
+* search works
+* filters do not crash
+* chart works
+* loading state works
+* error state works
+* fallback works
+* responsive UI still works
+
+---
+
+# 35. API FAILURE TEST
+
+Temporarily simulate API failure and verify that:
+
+```text
+API failure
+    ↓
+Error handled
+    ↓
+Fallback/demo state
+    ↓
+Application remains usable
+```
+
+Do not leave forced failure behavior in production.
+
+---
+
+# 36. BUILD QUALITY
+
+Before finishing, inspect the existing project first.
+
+Do not overwrite working V0.1 code unnecessarily.
+
+Prefer incremental changes.
+
+Do not duplicate:
+
+* types
+* components
+* utilities
+* API logic
+
+Do not create unnecessary abstractions.
+
+Use strict TypeScript.
+
+Avoid `any`.
+
+---
+
+# 37. ACCEPTANCE CRITERIA
+
+V0.2 is complete when:
+
+### Market data
+
+* [ ] Dashboard uses real market data
+* [ ] Markets page uses real market data
+* [ ] Token detail uses real market data
+* [ ] Prices are not hardcoded
+* [ ] 24h changes are not hardcoded
+* [ ] Market cap is not hardcoded
+* [ ] Volume is not hardcoded
+
+### API architecture
+
+* [ ] External API is accessed server-side
+* [ ] Market service exists
+* [ ] Data is normalized
+* [ ] UI does not depend on raw CoinGecko response
+* [ ] API errors are handled
+* [ ] 404 token handling exists
+
+### Charts
+
+* [ ] Historical chart uses real data
+* [ ] 1D works
+* [ ] 7D works
+* [ ] 30D works
+* [ ] Tooltip works
+* [ ] Loading state works
+* [ ] Error state works
+
+### Reliability
+
+* [ ] API caching/revalidation exists
+* [ ] Rate limit is handled
+* [ ] Fallback architecture exists
+* [ ] Demo/fallback state is clearly indicated
+
+### Security
+
+* [ ] No secret API key in client code
+* [ ] `.env.example` exists if needed
+* [ ] No credentials committed
+
+### UI
+
+* [ ] Existing V0.1 design remains intact
+* [ ] Responsive behavior remains intact
+* [ ] Loading states are polished
+* [ ] Error states are polished
+* [ ] Data source indicator exists
+* [ ] Last updated information exists where appropriate
+
+### Quality
+
+* [ ] `npm run lint` passes
+* [ ] `npm run build` passes
+* [ ] No TypeScript errors
+* [ ] No unnecessary `any`
+* [ ] No console errors in normal usage
+* [ ] Vercel-compatible
+
+---
+
+# 38. DO NOT IMPLEMENT YET
+
+The following are explicitly reserved for future versions:
+
+```text
+V0.3
+Wallet Connection
+
+V0.4
+On-chain Wallet Analytics
+
+V0.5
+Smart Money
+
+V0.6
+Paper Trading
+
+V0.7
+Risk Terminal
+```
+
+Do not implement them during V0.2.
+
+---
+
+# 39. FINAL PRODUCT STATE
+
+After this task, NEXORA should feel like:
+
+> A real market-data terminal powered by live external market data.
+
+The user should be able to:
+
+```text
+Open NEXORA
+      ↓
+View market overview
+      ↓
+Search markets
+      ↓
+Open ETH
+      ↓
+See current price
+      ↓
+See market statistics
+      ↓
+Inspect historical chart
+      ↓
+See updated timestamp
+```
+
+The application should remain visually premium and portfolio-ready.
+
+Most importantly:
+
+> **Do not fake blockchain data.**
+> V0.2 is market data only.
+> Actual on-chain data begins in V0.4.
