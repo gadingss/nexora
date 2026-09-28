@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+import { WalletNetworkStatus } from "@/components/web3/wallet-network-status";
+
 const navigation = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Markets", href: "/markets", icon: TrendingUp },
@@ -99,13 +101,7 @@ export function AppSidebar() {
       </div>
 
       <div className="p-4 border-t border-[#1f1f1f] bg-[#0a0a0a]">
-        <div className="flex items-center justify-between text-[11px] text-zinc-500 font-mono">
-          <span>NETWORK</span>
-          <span className="flex items-center gap-1.5 text-emerald-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            MAINNET
-          </span>
-        </div>
+        <WalletNetworkStatus />
       </div>
     </aside>
   );

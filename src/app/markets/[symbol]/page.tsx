@@ -191,11 +191,11 @@ export default function TokenDetailPage({ params }: TokenDetailPageProps) {
         )}
 
         <div className="bg-[#121212] border border-[#1f1f1f] rounded p-6">
-          <h2 className="text-xs font-mono tracking-wider text-zinc-400 uppercase mb-4">On-Chain Activity</h2>
+          <h2 className="text-xs font-mono tracking-wider text-zinc-400 uppercase mb-4">On-Chain Analytics</h2>
           <div className="space-y-3 text-sm text-zinc-400">
-            <p>Real on-chain indexing coming in V0.4.</p>
+            <p>Real-time on-chain wallet analytics available in the Wallet Explorer.</p>
             <p className="text-[10px]">
-              This includes active wallet metrics, transaction history, whale movements, and holder analytics.
+              Explore wallet balances, transaction history, portfolio allocation, and more.
             </p>
           </div>
         </div>

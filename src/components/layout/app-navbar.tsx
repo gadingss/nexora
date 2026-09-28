@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Search, Menu, X, Terminal } from "lucide-react";
+import { WalletButton } from "@/components/web3/wallet-button";
 
 export function AppNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -33,9 +34,7 @@ export function AppNavbar() {
               className="w-full h-9 pl-9 pr-4 bg-zinc-900 border border-zinc-800 rounded text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-700 focus:ring-1 focus:ring-zinc-700"
             />
           </div>
-          <button className="h-9 px-4 rounded-full bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition-colors whitespace-nowrap">
-            Connect
-          </button>
+          <WalletButton />
         </div>
       </header>
 

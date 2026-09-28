@@ -2068,3 +2068,3101 @@ Most importantly:
 > **Do not fake blockchain data.**
 > V0.2 is market data only.
 > Actual on-chain data begins in V0.4.
+
+
+# NEXORA V0.3 — Wallet Connection & Web3 Identity
+
+## 1. Overview
+
+V0.3 introduces the first real Web3 interaction layer into NEXORA.
+
+The goal of V0.3 is to allow users to connect a supported Web3 wallet, detect the connected wallet address and network, maintain wallet connection state, and prepare the application architecture for future on-chain analytics.
+
+V0.3 MUST focus exclusively on wallet connection and Web3 identity.
+
+V0.3 MUST NOT implement on-chain analytics, transaction indexing, smart money detection, portfolio valuation, paper trading, real trading, or AI features.
+
+The wallet address obtained in V0.3 will become the primary identity/input for V0.4 On-chain Analytics.
+
+---
+
+## 2. Goals
+
+V0.3 must provide:
+
+* Web3 wallet connection
+* Wallet address detection
+* Wallet connection state
+* Wallet disconnection
+* Network/chain detection
+* Supported network handling
+* Wallet state persistence during navigation
+* Clear connected/disconnected UI
+* Reusable Web3 provider architecture
+* Preparation for V0.4 on-chain analytics
+
+The implementation must integrate naturally with the existing NEXORA terminal UI.
+
+---
+
+## 3. Existing System Preservation
+
+V0.1 and V0.2 are already completed.
+
+DO NOT rewrite or remove existing V0.1/V0.2 functionality.
+
+Preserve:
+
+* Existing landing page
+* Dashboard
+* Markets page
+* Token detail pages
+* CoinGecko market data
+* Market API routes
+* Historical charts
+* Data source indicators
+* Loading states
+* Error states
+* Fallback architecture
+* Existing responsive behavior
+* Existing NEXORA visual identity
+
+V0.3 must be additive.
+
+---
+
+## 4. Recommended Web3 Stack
+
+Use:
+
+* wagmi
+* viem
+* a compatible wallet connector strategy
+* React integration already supported by the existing Next.js architecture
+
+Do NOT introduce unnecessary Web3 libraries.
+
+Do NOT use deprecated wallet integration patterns if the selected library provides a current supported approach.
+
+Use TypeScript strictly.
+
+Avoid `any`.
+
+---
+
+## 5. Wallet Support
+
+The first supported wallet should be an injected browser wallet such as MetaMask.
+
+The architecture should remain extensible so additional connectors can be added later.
+
+The implementation should not assume that MetaMask is the only possible wallet.
+
+If no injected wallet is available, display a clear message explaining that a compatible browser wallet is required.
+
+---
+
+## 6. Wallet Provider Architecture
+
+Create a centralized Web3 provider/configuration layer.
+
+Suggested architecture:
+
+src/
+├── app/
+│   └── providers.tsx
+├── components/
+│   └── wallet/
+│       ├── connect-wallet.tsx
+│       ├── wallet-button.tsx
+│       ├── wallet-modal.tsx
+│       └── wallet-status.tsx
+├── lib/
+│   └── web3/
+│       ├── config.ts
+│       └── chains.ts
+
+Adapt this structure to the existing project if equivalent architecture already exists.
+
+Do not duplicate providers or wallet configuration.
+
+---
+
+## 7. Wallet Connection Flow
+
+Disconnected state:
+
+CONNECT WALLET
+
+When clicked:
+
+1. Open wallet connection UI.
+2. Detect available wallet connector(s).
+3. Allow the user to connect.
+4. Request wallet permission.
+5. Detect connected address.
+6. Detect current chain.
+7. Update global wallet state.
+8. Reflect the connected state throughout NEXORA.
+
+Connected state should display:
+
+* shortened wallet address
+* connected network
+* connection status
+
+Example:
+
+0x71A2...9F31
+
+Ethereum
+
+CONNECTED
+
+The full address must remain available through a secondary interaction such as copy/address detail.
+
+---
+
+## 8. Wallet Address Formatting
+
+Never display the full address everywhere.
+
+Use a utility function for shortened addresses.
+
+Example:
+
+0x71A2...9F31
+
+The utility should:
+
+* preserve the `0x` prefix
+* show a configurable number of leading characters
+* show a configurable number of trailing characters
+* safely handle invalid/empty addresses
+
+---
+
+## 9. Copy Wallet Address
+
+Provide a copy action for the connected wallet address.
+
+Requirements:
+
+* Copy the complete wallet address to clipboard.
+* Show temporary feedback such as "COPIED".
+* Handle clipboard errors gracefully.
+* Do not expose the address unnecessarily in logs.
+
+---
+
+## 10. Disconnect
+
+Users must be able to disconnect their wallet from the NEXORA interface.
+
+Disconnected state must immediately update all wallet-dependent UI.
+
+Do not pretend the wallet is disconnected if the underlying connector remains active.
+
+Follow the behavior supported by the selected Web3 library.
+
+---
+
+## 11. Network Detection
+
+Detect the currently connected blockchain network.
+
+At minimum, support:
+
+* Ethereum Mainnet
+* Sepolia testnet
+
+The implementation must distinguish:
+
+* supported network
+* unsupported network
+
+Example supported state:
+
+NETWORK
+Ethereum
+
+Example unsupported state:
+
+NETWORK
+Unsupported
+
+---
+
+## 12. Unsupported Network Handling
+
+If the wallet is connected to an unsupported network:
+
+* Keep the wallet address visible.
+* Clearly display the unsupported network state.
+* Do not attempt to query unsupported on-chain data.
+* Provide a clear request to switch to a supported network when appropriate.
+
+Do not silently switch networks without user interaction.
+
+Network switching must require explicit wallet/user confirmation.
+
+---
+
+## 13. Wallet State
+
+Wallet state should be globally accessible to components that need it.
+
+At minimum expose:
+
+* isConnected
+* address
+* chainId
+* chain name
+* connector
+* connection/loading state
+* error state
+
+Do not duplicate wallet state independently across multiple pages.
+
+Use the Web3 library's reactive hooks/state mechanisms.
+
+---
+
+## 14. Navigation Integration
+
+The wallet connection control should be integrated into the existing NEXORA navigation/header.
+
+The wallet button must remain accessible across the application.
+
+Recommended states:
+
+DISCONNECTED:
+
+CONNECT WALLET
+
+CONNECTING:
+
+CONNECTING...
+
+CONNECTED:
+
+0x71A2...9F31
+
+The UI should remain consistent with the existing terminal aesthetic.
+
+---
+
+## 15. Dashboard Integration
+
+Do not add on-chain analytics yet.
+
+The Dashboard may display a small wallet status section such as:
+
+WALLET
+Disconnected
+
+or:
+
+WALLET
+0x71A2...9F31
+
+NETWORK
+Ethereum
+
+No portfolio balance or transaction information should be displayed in V0.3 unless it comes directly from wallet connection metadata and does not require on-chain indexing.
+
+---
+
+## 16. Wallet Explorer Integration
+
+The existing Wallet Explorer page should be prepared for the connected wallet.
+
+If the page currently exists as a Coming Soon placeholder, update only the wallet identity portion.
+
+Example:
+
+WALLET EXPLORER
+
+Connected Wallet
+
+0x71A2...9F31
+
+Network
+
+Ethereum
+
+ON-CHAIN ANALYTICS
+Coming in V0.4
+
+Do not implement transaction history yet.
+
+---
+
+## 17. Persistence
+
+Wallet connection should behave correctly during client-side navigation.
+
+Do not build custom localStorage wallet logic if the selected Web3 library already provides connector persistence.
+
+Avoid storing sensitive wallet credentials.
+
+NEXORA must NEVER request or store:
+
+* private keys
+* seed phrases
+* wallet passwords
+* secret recovery phrases
+
+NEXORA only reads the public wallet address and permitted wallet metadata.
+
+---
+
+## 18. Security Requirements
+
+Never request:
+
+* private key
+* seed phrase
+* secret recovery phrase
+* wallet password
+
+Never store sensitive wallet credentials.
+
+Never send private wallet information to NEXORA servers.
+
+The wallet address is public information.
+
+Do not create or sign transactions in V0.3.
+
+Do not request transaction signatures.
+
+---
+
+## 19. Server/Client Boundary
+
+Wallet interaction is browser-side functionality.
+
+Keep Web3 wallet hooks/components inside appropriate Client Components.
+
+Do not convert the entire application into a Client Component.
+
+Existing market data fetching should remain server-side.
+
+Maintain the architecture:
+
+Market Data:
+
+Browser
+→ NEXORA API
+→ CoinGecko
+
+Wallet:
+
+Browser
+→ Wallet Provider
+→ User Wallet
+
+The wallet connection should not require a custom backend.
+
+---
+
+## 20. Environment Variables
+
+V0.3 should not require private wallet credentials.
+
+Do not add:
+
+NEXT_PUBLIC_PRIVATE_KEY
+
+PRIVATE_KEY
+
+SEED_PHRASE
+
+or any equivalent secret.
+
+If a public RPC configuration is required by the selected Web3 stack, document it appropriately.
+
+Never expose secret credentials to the client.
+
+---
+
+## 21. Error States
+
+Handle at minimum:
+
+* No wallet installed
+* User rejects connection
+* Connection failure
+* Unsupported network
+* Wallet disconnected externally
+* Account changed
+* Network changed
+* Connector unavailable
+
+Error messages should be concise and terminal-style.
+
+Example:
+
+WALLET NOT DETECTED
+
+Install a compatible browser wallet to continue.
+
+Example:
+
+CONNECTION REJECTED
+
+Wallet connection was cancelled.
+
+---
+
+## 22. Account Changes
+
+If the user changes accounts inside their wallet:
+
+* NEXORA must update the displayed address.
+* Existing wallet-dependent UI must update automatically.
+* Do not continue displaying the previous address.
+
+---
+
+## 23. Network Changes
+
+If the user changes networks:
+
+* Update chain information automatically.
+* Re-evaluate whether the network is supported.
+* Update the UI accordingly.
+* Do not display stale network information.
+
+---
+
+## 24. Loading States
+
+Wallet interactions must have clear loading states.
+
+Examples:
+
+CONNECTING...
+SWITCHING NETWORK...
+DISCONNECTING...
+
+Do not block the entire application during wallet connection.
+
+Markets and dashboard data should remain usable independently of wallet connection.
+
+---
+
+## 25. UI Design Requirements
+
+Maintain the existing NEXORA design language.
+
+Use:
+
+* dark terminal aesthetic
+* subtle borders
+* monospace numbers
+* restrained accent colors
+* compact status indicators
+* minimal glow
+* clean spacing
+
+Avoid:
+
+* generic Web3 neon UI
+* oversized wallet buttons
+* excessive gradients
+* excessive animations
+* unnecessary modal complexity
+
+The wallet UI should feel like part of an institutional-grade intelligence terminal.
+
+---
+
+## 26. Responsive Design
+
+Wallet controls must work on:
+
+* desktop
+* tablet
+* mobile
+
+On smaller screens:
+
+* shorten the wallet display
+* avoid overflowing navigation
+* preserve access to connect/disconnect actions
+
+Do not break the existing responsive layout.
+
+---
+
+## 27. Accessibility
+
+Wallet controls must:
+
+* have accessible labels
+* be keyboard accessible
+* have visible focus states
+* communicate loading/error states
+* provide understandable text
+
+Do not rely exclusively on color to communicate wallet state.
+
+---
+
+## 28. Testing Requirements
+
+Run:
+
+npm run lint
+
+npm run build
+
+Then manually test:
+
+1. Open NEXORA while disconnected.
+2. Confirm CONNECT WALLET is visible.
+3. Connect MetaMask/injected wallet.
+4. Confirm wallet address appears.
+5. Confirm network appears.
+6. Refresh the page.
+7. Navigate between Dashboard, Markets, and Wallet Explorer.
+8. Confirm wallet state remains correct.
+9. Change wallet account.
+10. Confirm address updates.
+11. Change network.
+12. Confirm network updates.
+13. Connect to an unsupported network.
+14. Confirm unsupported network state.
+15. Disconnect wallet.
+16. Confirm disconnected state.
+17. Test rejected connection.
+18. Test when no wallet is installed.
+
+---
+
+## 29. Vercel Compatibility
+
+V0.3 must remain deployable to Vercel.
+
+Do not introduce:
+
+* custom Node servers
+* persistent background processes
+* local database
+* filesystem persistence
+* Docker requirements
+* localhost-only dependencies
+
+Wallet connection must work from the deployed HTTPS site.
+
+---
+
+## 30. Out of Scope
+
+The following are explicitly NOT part of V0.3:
+
+* wallet portfolio balance
+* token holdings
+* transaction history
+* transaction indexing
+* whale detection
+* smart money
+* wallet profitability
+* wallet PnL
+* wallet scoring
+* on-chain analytics
+* ERC-20 transfer indexing
+* NFT analytics
+* DEX analytics
+* real trading
+* transaction signing
+* token swapping
+* paper trading
+* risk scoring
+* AI analysis
+* authentication
+* database
+
+These belong to future versions.
+
+---
+
+## 31. Preparation for V0.4
+
+V0.3 should expose enough wallet identity information for V0.4.
+
+V0.4 will consume:
+
+* wallet address
+* chain ID
+* selected network
+
+V0.3 should therefore provide a clean reusable wallet state API/hooks that V0.4 can consume without rewriting the wallet architecture.
+
+---
+
+## 32. Acceptance Criteria
+
+V0.3 is complete when:
+
+* [ ] Wallet connection works.
+* [ ] Injected browser wallet is supported.
+* [ ] Wallet address is detected.
+* [ ] Address is shortened in UI.
+* [ ] Full address can be copied.
+* [ ] Wallet can be disconnected.
+* [ ] Connected network is detected.
+* [ ] Ethereum Mainnet is supported.
+* [ ] Sepolia is supported.
+* [ ] Unsupported networks are detected.
+* [ ] Account changes update the UI.
+* [ ] Network changes update the UI.
+* [ ] Connection errors are handled.
+* [ ] No private keys or seed phrases are requested.
+* [ ] No transaction signing is implemented.
+* [ ] Dashboard remains functional without a wallet.
+* [ ] Markets remain functional without a wallet.
+* [ ] Existing V0.2 CoinGecko integration remains functional.
+* [ ] Existing V0.1 UI remains intact.
+* [ ] Responsive layout remains intact.
+* [ ] npm run lint passes.
+* [ ] npm run build passes.
+* [ ] Vercel deployment remains possible.
+
+---
+
+## 33. Development Status
+
+* [x] V0.1 — Foundation & UI
+* [x] V0.2 — Real Market Data & API Layer
+* [ ] V0.3 — Wallet Connection & Web3 Identity
+* [ ] V0.4 — On-chain Analytics
+* [ ] V0.5 — Smart Money
+* [ ] V0.6 — Paper Trading
+* [ ] V0.7 — Risk Terminal
+
+---
+
+## 34. V0.3 Completion Rule
+
+When V0.3 acceptance criteria are satisfied, stop development.
+
+Do not automatically begin V0.4.
+
+V0.4 must be implemented as a separate milestone.
+
+# NEXORA — V0.4 On-chain Analytics & Wallet Explorer
+
+## 1. Overview
+
+V0.4 adalah tahap pengembangan NEXORA yang mulai menghubungkan wallet yang sudah berhasil terhubung pada V0.3 dengan data blockchain secara read-only.
+
+Tujuan utama V0.4 adalah membuat Wallet Explorer yang dapat membaca dan menyajikan informasi on-chain dari wallet pengguna secara aman, informatif, dan memiliki visualisasi seperti terminal analytics profesional.
+
+V0.4 TIDAK melakukan transaksi dan TIDAK meminta user melakukan signing transaction.
+
+V0.4 harus mempertahankan seluruh fitur V0.1, V0.2, dan V0.3.
+
+---
+
+## 2. Current System
+
+NEXORA saat ini memiliki:
+
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- V0.1 premium dark financial terminal UI
+- V0.2 real market data menggunakan CoinGecko
+- V0.3 wallet connection
+- MetaMask support
+- Phantom support
+- Ethereum Mainnet
+- Sepolia
+- Wallet connect/disconnect
+- Wallet address detection
+- Network detection
+- Account change detection
+- Network change detection
+
+Jangan mengganti arsitektur existing tanpa alasan teknis yang kuat.
+
+---
+
+# 3. V0.4 Goals
+
+Implementasikan:
+
+1. Wallet Explorer
+2. Native wallet balance
+3. Token holdings
+4. Wallet transaction history
+5. Incoming/outgoing transaction classification
+6. Wallet activity summary
+7. Portfolio value estimation
+8. Recent activity visualization
+9. Explorer links
+10. Loading states
+11. Error states
+12. Empty states
+13. Read-only blockchain data access
+
+---
+
+# 4. STRICT SCOPE
+
+V0.4 hanya fokus pada:
+
+- membaca data blockchain
+- wallet analytics dasar
+- wallet explorer
+- portfolio overview
+- transaction history
+
+Jangan implementasikan:
+
+- Smart Money
+- whale tracking
+- wallet scoring
+- wallet labeling
+- AI analysis
+- trading recommendation
+- buy/sell signal
+- paper trading
+- real trading
+- transaction sending
+- token swapping
+- staking
+- lending
+- transaction signing
+- private key handling
+- seed phrase handling
+- database
+- authentication system
+
+Fitur-fitur tersebut adalah milestone berikutnya.
+
+---
+
+# 5. Blockchain Scope
+
+Prioritaskan EVM terlebih dahulu.
+
+Supported networks:
+
+### Ethereum Mainnet
+- chainId: 1
+- explorer: Etherscan
+
+### Sepolia
+- chainId: 11155111
+- explorer: Sepolia Etherscan
+
+Jangan memaksakan support Solana hanya karena Phantom dapat digunakan.
+
+Jika Phantom terhubung sebagai EVM wallet, gunakan provider/connector EVM yang sesuai dengan architecture V0.3.
+
+Solana-specific analytics bukan bagian V0.4.
+
+---
+
+# 6. Web3 Stack
+
+Gunakan architecture yang sudah digunakan V0.3.
+
+Preferred:
+
+- wagmi
+- viem
+- existing wallet connectors
+- existing wallet state
+
+Jangan menambahkan library Web3 baru jika functionality dapat dilakukan dengan library yang sudah tersedia.
+
+Jangan mengganti wagmi/viem hanya untuk V0.4.
+
+---
+
+# 7. Wallet Explorer
+
+Route:
+
+`/wallet-explorer`
+
+Jika wallet belum terhubung:
+
+Display:
+
+- Wallet Not Connected
+- Connect Wallet CTA
+- explanation bahwa wallet connection diperlukan untuk membaca data
+
+Jika wallet sudah terhubung:
+
+Display:
+
+### Header
+
+- Wallet Explorer
+- shortened wallet address
+- full address copy button
+- network
+- explorer link
+- refresh button
+
+---
+
+# 8. Wallet Overview
+
+Tampilkan:
+
+### Native Balance
+
+Contoh:
+
+ETH Balance
+`2.4831 ETH`
+
+USD estimated value:
+
+`$6,xxx.xx`
+
+USD valuation berasal dari market price data yang sudah tersedia dari V0.2.
+
+Jangan hardcode harga.
+
+---
+
+# 9. Portfolio Summary
+
+Tampilkan:
+
+- Total estimated portfolio value
+- Native asset value
+- Token value
+- Number of assets
+- Number of transactions
+- Last activity
+
+Portfolio value adalah ESTIMATED value.
+
+Gunakan label:
+
+`Estimated Portfolio Value`
+
+Jangan menyebutnya sebagai exact financial valuation.
+
+Jika harga token tidak tersedia:
+
+- tampilkan `—`
+- jangan membuat harga palsu
+
+---
+
+# 10. Token Holdings
+
+Buat table:
+
+| Asset | Balance | Price | Value | % Portfolio |
+|---|---:|---:|---:|---:|
+
+Data minimal:
+
+- token symbol
+- token name
+- token contract address
+- decimals
+- raw balance
+- formatted balance
+- current price jika tersedia
+- estimated USD value
+- percentage portfolio
+
+Gunakan ERC-20 balanceOf untuk token holdings jika provider memungkinkan.
+
+Jangan menampilkan token sebagai legitimate hanya karena ditemukan pada address.
+
+Token metadata harus ditangani dengan aman.
+
+---
+
+# 11. Native Balance
+
+Gunakan blockchain RPC/provider untuk membaca native balance.
+
+Gunakan:
+
+`getBalance`
+
+Format balance menggunakan viem utilities.
+
+Jangan melakukan floating-point calculation pada raw blockchain integer jika tidak diperlukan.
+
+Gunakan bigint untuk nilai blockchain.
+
+Konversi ke human-readable hanya pada presentation layer.
+
+---
+
+# 12. Token Discovery
+
+V0.4 harus memiliki strategy yang realistis.
+
+Jangan melakukan scanning seluruh ERC-20 contract secara brute force.
+
+Jika provider/API yang digunakan mendukung token balance discovery, gunakan endpoint tersebut.
+
+Jika hanya RPC tersedia dan token discovery tidak tersedia:
+
+Display:
+
+`Token discovery unavailable for this network/provider`
+
+Jangan membuat token list palsu.
+
+Architecture harus dibuat agar provider token-indexing dapat ditambahkan pada milestone berikutnya.
+
+---
+
+# 13. Transaction History
+
+Wallet Explorer harus memiliki transaction history.
+
+Table:
+
+| Time | Type | Asset | Amount | From/To | Status | Explorer |
+|---|---|---|---:|---|---|---|
+
+Classification:
+
+### Incoming
+
+Wallet adalah recipient.
+
+### Outgoing
+
+Wallet adalah sender.
+
+### Contract Interaction
+
+Transaction berinteraksi dengan smart contract.
+
+### Unknown
+
+Jika classification tidak dapat ditentukan.
+
+Jangan membuat classification berdasarkan asumsi.
+
+---
+
+# 14. Transaction Data
+
+Minimal data:
+
+- transaction hash
+- block number
+- timestamp
+- from
+- to
+- value
+- gas used jika tersedia
+- gas price jika tersedia
+- status jika tersedia
+- contract interaction indicator
+
+Gunakan block explorer/indexing API jika diperlukan untuk historical transactions.
+
+Jangan melakukan ribuan RPC request untuk mengambil history.
+
+---
+
+# 15. Transaction Detail
+
+Setiap transaction dapat dibuka untuk melihat:
+
+- Hash
+- Status
+- Block
+- Timestamp
+- From
+- To
+- Value
+- Gas
+- Network
+- Explorer link
+
+Explorer link harus sesuai network.
+
+Ethereum:
+
+`https://etherscan.io/tx/{hash}`
+
+Sepolia:
+
+`https://sepolia.etherscan.io/tx/{hash}`
+
+Address link:
+
+`https://etherscan.io/address/{address}`
+
+atau Sepolia equivalent.
+
+---
+
+# 16. Wallet Activity
+
+Tambahkan summary:
+
+- Transactions
+- Incoming
+- Outgoing
+- Contract interactions
+- Last active
+
+Contoh:
+
+`128 Transactions`
+
+`73 Incoming`
+
+`55 Outgoing`
+
+Data harus berasal dari blockchain/indexer.
+
+Jangan menggunakan mock data pada wallet analytics.
+
+---
+
+# 17. Charts
+
+Tambahkan visualisasi sederhana:
+
+### Portfolio Allocation
+
+Donut chart:
+
+- Native asset
+- Token assets
+
+### Wallet Activity
+
+Bar/line chart:
+
+- transaction activity berdasarkan waktu
+
+Chart harus mengikuti visual language NEXORA.
+
+Jangan membuat chart terlalu ramai.
+
+---
+
+# 18. Data Architecture
+
+Buat abstraction layer.
+
+Contoh struktur:
+
+`src/lib/web3/`
+
+Possible files:
+
+- `client.ts`
+- `wallet.ts`
+- `balance.ts`
+- `tokens.ts`
+- `transactions.ts`
+- `explorer.ts`
+
+Sesuaikan dengan struktur existing.
+
+Jangan membuat architecture yang terlalu kompleks.
+
+---
+
+# 19. Provider Architecture
+
+Blockchain provider harus dipisahkan dari UI.
+
+UI tidak boleh langsung melakukan seluruh logic blockchain.
+
+Gunakan:
+
+UI
+↓
+Wallet/Web3 hooks
+↓
+Web3 service layer
+↓
+RPC / Indexer
+↓
+Blockchain
+
+Tujuannya agar provider/indexer dapat diganti pada milestone berikutnya.
+
+---
+
+# 20. API / Server Boundary
+
+Jangan expose secret API keys ke browser.
+
+Jika menggunakan indexing provider yang membutuhkan API key:
+
+Gunakan server-side API route.
+
+Contoh:
+
+`/api/wallet/[address]/...`
+
+Secret hanya berada di:
+
+`.env.local`
+
+Production secrets berada di Vercel Environment Variables.
+
+Jangan menggunakan:
+
+`NEXT_PUBLIC_*`
+
+untuk secret API key.
+
+---
+
+# 21. Recommended Provider Strategy
+
+Gunakan provider/indexer yang paling sesuai dengan existing project dan availability saat implementation.
+
+Sebelum memilih provider:
+
+- inspect existing dependencies
+- inspect V0.3 architecture
+- verify current API/library documentation
+- prefer free/developer-friendly option
+- ensure Vercel compatibility
+
+Provider harus mendukung:
+
+- Ethereum Mainnet
+- Sepolia
+- native balance
+- ERC-20 balances
+- transaction history where possible
+
+Jangan hardcode provider assumptions tanpa memeriksa API response.
+
+---
+
+# 22. Caching
+
+Blockchain data tidak perlu diminta ulang pada setiap render.
+
+Implementasikan caching yang wajar untuk:
+
+- token balances
+- transaction history
+- token metadata
+
+Namun:
+
+- wallet address harus selalu mengikuti connected wallet
+- network harus selalu mengikuti connected network
+- user harus dapat manual refresh
+
+---
+
+# 23. Loading State
+
+Gunakan skeleton/loading state untuk:
+
+- wallet balance
+- portfolio
+- token table
+- transaction table
+- charts
+
+Jangan menampilkan `$0` ketika data belum selesai loading.
+
+Gunakan:
+
+`—`
+
+atau skeleton.
+
+---
+
+# 24. Error State
+
+Jika RPC/indexer gagal:
+
+Display:
+
+`Unable to load on-chain data`
+
+Dengan:
+
+`Retry`
+
+Jangan fallback ke fake blockchain data.
+
+Berbeda dengan market data V0.2 yang memiliki fallback mock data, V0.4 WALLET DATA tidak boleh menggunakan fake data.
+
+---
+
+# 25. Empty State
+
+Jika wallet tidak memiliki transaction:
+
+`No transactions found`
+
+Jika wallet tidak memiliki token:
+
+`No token holdings detected`
+
+Jangan menampilkan mock assets.
+
+---
+
+# 26. Security
+
+CRITICAL:
+
+NEXORA hanya membaca data.
+
+Tidak boleh:
+
+- request seed phrase
+- request private key
+- store private key
+- store seed phrase
+- request wallet password
+- sign arbitrary transaction
+- send transaction
+- execute contract write
+
+Connecting wallet ≠ signing transaction.
+
+---
+
+# 27. UX
+
+Wallet Explorer harus terasa seperti:
+
+- Bloomberg terminal
+- professional crypto analytics dashboard
+- TradingView-style data density
+- institutional analytics
+
+Hindari:
+
+- generic crypto dashboard
+- excessive neon
+- giant gradients
+- meme-style UI
+- unnecessary animations
+
+Gunakan:
+
+- near-black background
+- subtle borders
+- dark cards
+- compact tables
+- monospace numerical data
+- restrained green/red indicators
+
+---
+
+# 28. Responsive
+
+Desktop:
+
+Full analytics terminal layout.
+
+Tablet:
+
+Compact tables and cards.
+
+Mobile:
+
+Cards stacked.
+
+Transaction table dapat menggunakan horizontal scroll jika diperlukan.
+
+Jangan menghilangkan important data hanya untuk mobile.
+
+---
+
+# 29. Existing Market Data Integration
+
+Gunakan market data V0.2 untuk:
+
+- native asset USD valuation
+- token USD valuation where supported
+
+Jangan membuat duplicate CoinGecko implementation.
+
+Reuse existing market API/service layer.
+
+---
+
+# 30. Wallet Address
+
+Address harus selalu berasal dari connected wallet.
+
+Contoh:
+
+`0x71A...92F`
+
+Provide:
+
+- shortened address
+- copy full address
+- explorer link
+
+Full address tidak perlu ditampilkan permanen jika UI terlalu padat.
+
+---
+
+# 31. Network Handling
+
+Gunakan network yang terdeteksi pada V0.3.
+
+Ethereum Mainnet:
+
+`1`
+
+Sepolia:
+
+`11155111`
+
+Jika unsupported:
+
+Display:
+
+`Unsupported Network`
+
+Jangan melakukan silent network switching.
+
+Jangan meminta switch network otomatis pada V0.4 kecuali benar-benar diperlukan.
+
+---
+
+# 32. Performance
+
+Avoid:
+
+- excessive RPC calls
+- sequential request chains jika bisa parallel
+- fetching transaction history repeatedly
+- fetching every token metadata individually jika provider mendukung batch
+
+Gunakan:
+
+- caching
+- parallel requests
+- pagination
+- limited transaction history per request
+
+---
+
+# 33. Pagination
+
+Transaction history:
+
+Default:
+
+`20 transactions`
+
+Provide:
+
+- Previous
+- Next
+
+Jika API provider mendukung cursor pagination, gunakan cursor.
+
+Jangan load ribuan transaksi sekaligus.
+
+---
+
+# 34. Accessibility
+
+Interactive elements harus:
+
+- keyboard accessible
+- memiliki accessible label
+- memiliki visible focus state
+- memiliki sufficient contrast
+
+Copy button harus memiliki feedback:
+
+`Copied`
+
+---
+
+# 35. Testing
+
+Setelah implementation:
+
+Run:
+
+`npm run lint`
+
+dan:
+
+`npm run build`
+
+Pastikan tidak ada TypeScript error.
+
+Manual testing:
+
+### Wallet
+
+- connect MetaMask
+- connect Phantom
+- disconnect
+- account change
+- network change
+
+### Balance
+
+- native balance tampil
+- balance sesuai wallet
+- refresh berhasil
+
+### Tokens
+
+- token holdings tampil jika provider mendukung
+- no fake token data
+
+### Transactions
+
+- history tampil
+- incoming/outgoing classification
+- transaction detail
+- explorer link
+
+### Error
+
+- RPC error
+- API error
+- unsupported network
+- disconnected wallet
+
+---
+
+# 36. Vercel
+
+Implementation harus Vercel compatible.
+
+Environment variables:
+
+`.env.local`
+
+Development only.
+
+Production:
+
+Vercel Environment Variables.
+
+Never expose private API keys using `NEXT_PUBLIC_`.
+
+---
+
+# 37. Out of Scope
+
+DO NOT implement:
+
+- Smart Money
+- whale detection
+- wallet scoring
+- wallet reputation
+- AI
+- trading signal
+- buy/sell recommendation
+- paper trading
+- real trading
+- transaction signing
+- swaps
+- staking
+- lending
+- database
+- authentication
+
+---
+
+# 38. V0.5 Preparation
+
+Architecture V0.4 harus memungkinkan V0.5 menggunakan:
+
+- wallet transaction history
+- token transfers
+- wallet activity
+- portfolio data
+
+V0.5 akan fokus pada:
+
+`Smart Money`
+
+Tetapi V0.4 hanya menyediakan raw/structured data.
+
+Jangan implementasikan Smart Money sekarang.
+
+---
+
+# 39. Acceptance Criteria
+
+V0.4 dianggap selesai jika:
+
+- [ ] `/wallet-explorer` aktif
+- [ ] connected wallet terdeteksi
+- [ ] native balance tampil
+- [ ] USD estimated value tampil jika market price tersedia
+- [ ] token holdings tampil jika provider mendukung
+- [ ] transaction history tampil jika provider mendukung
+- [ ] incoming/outgoing classification berjalan
+- [ ] transaction detail tersedia
+- [ ] explorer links bekerja
+- [ ] portfolio summary tersedia
+- [ ] wallet activity tersedia
+- [ ] charts tersedia
+- [ ] loading state tersedia
+- [ ] error state tersedia
+- [ ] empty state tersedia
+- [ ] no fake wallet data
+- [ ] no private key handling
+- [ ] no seed phrase handling
+- [ ] no transaction signing
+- [ ] V0.1 tetap berjalan
+- [ ] V0.2 market data tetap berjalan
+- [ ] V0.3 wallet connection tetap berjalan
+- [ ] `npm run lint` passed
+- [ ] `npm run build` passed
+
+---
+
+# 40. Completion Rule
+
+Jangan melanjutkan ke V0.5.
+
+Stop setelah V0.4 selesai dan seluruh acceptance criteria terpenuhi.
+
+Report:
+
+1. files created
+2. files modified
+3. provider/indexer yang digunakan
+4. environment variables
+5. implemented features
+6. limitations
+7. lint result
+8. build result
+9. manual testing instructions
+
+Status:
+
+`V0.4 — ON-CHAIN ANALYTICS & WALLET EXPLORER`
+
+# NEXORA — V0.5 Smart Money Intelligence
+
+## 5.0 Overview
+
+V0.5 menambahkan modul **Smart Money Intelligence** ke NEXORA.
+
+Tujuan modul ini adalah memberikan kemampuan kepada pengguna untuk memantau aktivitas wallet tertentu berdasarkan data blockchain nyata. Sistem menampilkan aktivitas, arus ETH, statistik transaksi, dan riwayat aktivitas wallet secara read-only.
+
+Istilah "Smart Money" pada NEXORA digunakan sebagai nama modul monitoring wallet. Sistem tidak menyatakan bahwa wallet tertentu pasti lebih pintar, lebih profitable, atau merupakan rekomendasi investasi.
+
+V0.5 dibangun di atas fondasi V0.3 Web3 Wallet Connection dan V0.4 Wallet Explorer.
+
+---
+
+## 5.1 Goals
+
+V0.5 harus menyediakan:
+
+- Smart Money dashboard
+- Tracked wallet monitoring
+- Wallet search
+- Wallet detail
+- Wallet activity
+- Incoming/outgoing transaction classification
+- ETH inflow analysis
+- ETH outflow analysis
+- Net flow calculation
+- Wallet activity chart
+- Wallet activity summary
+- Wallet ranking berdasarkan metrik objektif
+- Ethereum Mainnet support
+- Sepolia Testnet support
+- Explorer links
+- Real on-chain data
+- Loading, error, dan empty states
+- Server-side API key protection
+- Read-only wallet analytics
+
+---
+
+## 5.2 Non-Goals
+
+V0.5 TIDAK mencakup:
+
+- ERC-20 token intelligence
+- NFT analytics
+- DEX trade decoding
+- Complex PnL calculation
+- Realized PnL
+- Unrealized PnL
+- Automated wallet discovery
+- AI wallet scoring
+- AI recommendation
+- Buy/sell signal
+- Copy trading
+- Automated trading
+- Transaction signing
+- Sending transaction
+- Swap
+- Bridge
+- Token approval
+- Smart contract execution
+- Authentication
+- Database
+- Private key management
+- Seed phrase management
+
+Semua fitur tersebut berada di luar scope V0.5.
+
+---
+
+# 5.3 Smart Money Dashboard
+
+Route:
+
+`/smart-money`
+
+Halaman ini menjadi pusat monitoring wallet yang telah ditentukan untuk dipantau.
+
+### Header
+
+Menampilkan:
+
+- Title: `SMART MONEY`
+- Subtitle: `Wallet intelligence & on-chain activity`
+- Data status
+- Last updated
+- Refresh button
+
+Status data:
+
+- `LIVE DATA`
+- `SYNCING`
+- `DATA UNAVAILABLE`
+- `NO DATA`
+
+---
+
+## 5.4 Tracked Wallets
+
+Sistem menyediakan daftar wallet yang dapat dipantau.
+
+Setiap wallet memiliki:
+
+- Wallet address
+- Label
+- Network
+- ETH balance
+- Transaction count
+- Total inflow
+- Total outflow
+- Net flow
+- First activity
+- Last activity
+
+Contoh label:
+
+- `Tracked Wallet 01`
+- `Tracked Wallet 02`
+- `Tracked Wallet 03`
+
+Label hanya merupakan identitas lokal dan tidak boleh dianggap sebagai bukti bahwa wallet tersebut merupakan wallet yang profitable atau memiliki kemampuan prediktif.
+
+---
+
+## 5.5 Tracked Wallet Configuration
+
+Tracked wallet dapat dikonfigurasi secara server-side.
+
+Contoh struktur:
+
+```ts
+const SMART_MONEY_WALLETS = [
+  {
+    address: "0x...",
+    label: "Tracked Wallet 01",
+    network: "ethereum",
+  },
+];
+Konfigurasi tidak boleh menyimpan:
+
+private key
+seed phrase
+wallet password
+signing credentials
+
+Jika tidak terdapat tracked wallet:
+NO TRACKED WALLETS
+
+Add a wallet address to begin monitoring.
+
+5.6 Wallet Search
+
+Pengguna dapat memasukkan alamat EVM untuk melihat data wallet.
+
+Input:
+
+Search wallet address...
+
+Sistem harus melakukan validasi EVM address menggunakan viem.
+
+Jika address tidak valid:
+
+INVALID WALLET ADDRESS
+
+Sistem tidak boleh mengirim request ke provider apabila address tidak valid.
+
+5.7 Wallet Detail
+
+Route:
+
+/smart-money/[address]
+
+Halaman detail wallet menampilkan:
+
+Wallet Identity
+Address
+Network
+Copy address
+Explorer link
+
+Contoh:
+
+0x6295...E41e2
+
+Address lengkap tetap dapat disalin menggunakan tombol copy.
+
+Wallet Metrics
+ETH Balance
+Transaction Count
+Total Inflow
+Total Outflow
+Net Flow
+First Activity
+Last Activity
+
+Jika data tidak tersedia:
+
+—
+
+Sistem tidak boleh mengganti data yang tidak tersedia dengan nilai dummy.
+
+5.8 Wallet Activity
+
+Wallet activity menampilkan transaksi wallet berdasarkan data blockchain nyata.
+
+Setiap activity memiliki:
+
+Transaction hash
+Timestamp
+Direction
+Amount
+From
+To
+Block number
+Status
+Explorer link
+
+Contoh:
+
+OUT
+0.42 ETH
+To 0x8A...21F
+
+2h ago
+
+atau:
+
+IN
+1.20 ETH
+From 0x91...ABC
+
+5h ago
+5.9 Activity Classification
+
+Sistem mengklasifikasikan transaksi menjadi:
+
+IN
+OUT
+SELF
+CONTRACT
+UNKNOWN
+IN
+
+Wallet menerima ETH.
+
+OUT
+
+Wallet mengirim ETH.
+
+SELF
+
+Sender dan receiver merupakan address yang sama.
+
+CONTRACT
+
+Transaksi terdeteksi sebagai contract interaction.
+
+UNKNOWN
+
+Data tidak cukup untuk menentukan klasifikasi.
+
+Sistem tidak boleh membuat klasifikasi berdasarkan asumsi jika data blockchain tidak mencukupi.
+
+5.10 Flow Analysis
+
+Sistem menghitung arus ETH wallet.
+
+Metrics:
+
+Total Inflow
+Total Outflow
+Net Flow
+
+Formula:
+
+Net Flow = Total Inflow - Total Outflow
+
+Periode yang tersedia:
+
+24H
+7D
+30D
+90D
+
+Jika data periode tertentu tidak tersedia, sistem harus menampilkan:
+
+NO DATA
+
+dan bukan membuat data simulasi.
+
+5.11 Wallet Activity Chart
+
+Gunakan Recharts yang telah digunakan pada versi sebelumnya.
+
+Chart menampilkan:
+
+ETH Inflow
+ETH Outflow
+Net Flow
+
+Tooltip menampilkan:
+
+Date
+Inflow
+Outflow
+Net Flow
+
+Chart harus:
+
+responsive
+readable
+memiliki tooltip
+mendukung dark theme
+tidak menggunakan visual berlebihan
+5.12 Wallet Activity Summary
+
+Dashboard menyediakan summary card.
+
+Contoh:
+
+ACTIVITY
+
+Transactions
+124
+
+Incoming
+68
+
+Outgoing
+56
+
+Net Flow
++3.42 ETH
+
+Semua angka harus berasal dari data blockchain aktual.
+
+5.13 Wallet Ranking
+
+Dashboard dapat menampilkan ranking tracked wallet berdasarkan metrik objektif.
+
+Metrik yang tersedia:
+
+Activity
+Transaction Count
+Net Flow
+
+Contoh:
+
+TRACKED WALLETS
+
+#   Wallet       Transactions    Net Flow
+01  0x8A...21F   142             +4.21 ETH
+02  0x91...ABC   97              -1.22 ETH
+03  0x72...DEF   81              +0.82 ETH
+
+Ranking hanya digunakan untuk mengurutkan data berdasarkan metric yang dipilih.
+
+Sistem tidak boleh menggunakan label:
+
+BEST WALLET
+WINNER
+MOST PROFITABLE
+BUY THIS
+SELL THIS
+
+Net flow yang lebih tinggi tidak boleh dijelaskan sebagai bukti bahwa wallet tersebut merupakan investasi yang lebih baik.
+
+5.14 Network Support
+
+V0.5 mendukung:
+
+Ethereum Mainnet
+Sepolia Testnet
+
+Network harus selalu ditampilkan pada wallet data.
+
+Contoh:
+
+ETHEREUM MAINNET
+
+atau:
+
+SEPOLIA TESTNET
+
+Data dari Ethereum Mainnet dan Sepolia tidak boleh dicampur.
+
+5.15 API Architecture
+
+V0.5 menggunakan server-side API architecture.
+
+Endpoint:
+
+GET /api/smart-money
+
+Mengambil daftar tracked wallets.
+
+GET /api/smart-money/[address]
+
+Mengambil wallet overview.
+
+GET /api/smart-money/[address]/activity
+
+Mengambil transaction activity.
+
+GET /api/smart-money/[address]/flow
+
+Mengambil inflow/outflow data.
+
+5.16 Smart Money Wallet Type
+
+Gunakan struktur type yang konsisten dengan architecture NEXORA.
+
+Contoh:
+
+interface SmartMoneyWallet {
+  address: string;
+  label: string;
+  network: "ethereum" | "sepolia";
+  balance: number | null;
+  transactionCount: number | null;
+  inflow: number | null;
+  outflow: number | null;
+  netFlow: number | null;
+  firstActivity: string | null;
+  lastActivity: string | null;
+}
+5.17 Smart Money Activity Type
+
+Contoh:
+
+interface SmartMoneyActivity {
+  hash: string;
+  timestamp: string;
+  direction: "in" | "out" | "self" | "contract" | "unknown";
+  amount: number | null;
+  from: string;
+  to: string;
+  blockNumber: number;
+  status: "success" | "failed" | "unknown";
+}
+
+Jika type yang sama sudah tersedia pada V0.4, gunakan kembali type tersebut daripada membuat duplicate types.
+
+5.18 Data Provider
+
+V0.5 harus menggunakan data blockchain nyata.
+
+Prioritas provider:
+
+Etherscan API
+        ↓
+RPC fallback
+
+Gunakan infrastructure yang telah dibuat pada V0.4 apabila memungkinkan.
+
+Environment variable:
+
+ETHERSCAN_API_KEY=
+
+API key hanya boleh digunakan server-side.
+
+DILARANG:
+
+NEXT_PUBLIC_ETHERSCAN_API_KEY=
+
+API key tidak boleh dikirim ke browser.
+
+5.19 Caching
+
+Gunakan caching untuk mengurangi request provider.
+
+Recommended:
+
+Wallet overview:
+30–60 seconds
+
+Activity:
+30–60 seconds
+
+Flow:
+60 seconds
+
+Dashboard harus menyediakan manual refresh.
+
+Contoh:
+
+LAST UPDATED 12s AGO
+5.20 Loading State
+
+Saat mengambil data:
+
+LOADING WALLET DATA...
+
+Gunakan skeleton loading untuk:
+
+metric cards
+chart
+activity table
+wallet ranking
+5.21 Error State
+
+Jika provider gagal:
+
+ON-CHAIN DATA UNAVAILABLE
+
+Unable to retrieve wallet activity.
+Please try again later.
+
+Sediakan:
+
+RETRY
+
+Jangan menggunakan fake data sebagai fallback.
+
+5.22 Empty State
+
+Jika wallet tidak memiliki aktivitas:
+
+NO ON-CHAIN ACTIVITY
+
+This wallet has no available activity for the selected period.
+
+Jika belum ada tracked wallet:
+
+NO TRACKED WALLETS
+
+Add a wallet address to begin monitoring.
+5.23 Unsupported Network
+
+Jika network tidak didukung:
+
+UNSUPPORTED NETWORK
+
+NEXORA currently supports Ethereum Mainnet and Sepolia.
+
+Sistem tidak boleh menampilkan data seolah-olah berasal dari network yang berbeda.
+
+5.24 Explorer Links
+
+Setiap transaction menyediakan explorer link sesuai network.
+
+Ethereum Mainnet:
+
+Etherscan
+
+Sepolia:
+
+Sepolia Etherscan
+
+Wallet address juga harus memiliki explorer link.
+
+5.25 Security
+
+V0.5 bersifat:
+
+READ ONLY
+
+Tidak boleh meminta:
+
+Private key
+Seed phrase
+Wallet password
+Signing permission
+
+Tidak boleh melakukan:
+
+Transaction signing
+Send transaction
+Swap
+Bridge
+Approve
+Trade
+Copy trading
+Contract execution
+5.26 Wallet Connection
+
+V0.3 wallet connection tetap digunakan.
+
+Namun Smart Money analytics tidak membutuhkan transaction signing.
+
+Wallet connection hanya digunakan untuk:
+
+wallet identity
+address context
+network context
+
+Tracked wallet dapat tetap dianalisis berdasarkan address tanpa harus connect wallet.
+
+5.27 UI Design
+
+Pertahankan visual identity NEXORA.
+
+Design direction:
+
+Dark financial terminal
+Bloomberg / TradingView inspired
+Near-black background
+Dark gray cards
+Subtle borders
+White and gray typography
+Restrained green/red
+Monospace numerical values
+Inter
+JetBrains Mono
+Minimal glow
+Subtle grid
+Subtle animations
+
+Hindari:
+
+generic crypto landing page
+excessive neon
+excessive gradients
+oversized crypto icons
+unnecessary animations
+5.28 Responsive Design
+Desktop
+
+Layout dapat terdiri dari:
+
+Sidebar
+Smart Money header
+Wallet ranking
+Metric cards
+Flow chart
+Activity table
+Tablet
+
+Gunakan layout yang dapat menyesuaikan ukuran layar.
+
+Mobile
+
+Gunakan:
+
+stacked cards
+responsive chart
+horizontally scrollable transaction table
+shortened wallet address
+copy button
+5.29 Performance
+
+V0.5 harus:
+
+meminimalkan provider requests;
+menggunakan caching;
+tidak melakukan unnecessary re-fetch;
+menggunakan React Query jika sesuai dengan architecture V0.4;
+melakukan pagination pada transaction activity;
+tidak memuat seluruh blockchain history sekaligus.
+5.30 Data Integrity
+
+Data blockchain harus diperlakukan sebagai source of truth.
+
+Jika provider mengembalikan:
+
+null
+
+maka UI harus menampilkan:
+
+—
+
+atau:
+
+NO DATA
+
+Jangan mengganti nilai dengan:
+
+0
+
+kecuali nilai 0 memang berasal dari provider atau hasil perhitungan yang valid.
+
+DILARANG membuat:
+
+fake transactions
+fake wallet balances
+fake transaction counts
+fake inflow
+fake outflow
+fake timestamps
+fake profit
+fake wallet ranking
+5.31 Accessibility
+
+Implement:
+
+semantic HTML
+keyboard-accessible buttons
+visible focus states
+sufficient text contrast
+accessible chart labels where possible
+descriptive button labels
+copy button feedback
+accessible loading/error states
+5.32 V0.5 Acceptance Criteria
+
+V0.5 dinyatakan selesai apabila seluruh kondisi berikut terpenuhi:
+
+ /smart-money tersedia
+ Tracked wallet dapat ditampilkan
+ Wallet address dapat dicari
+ Invalid address ditangani
+ Wallet detail tersedia
+ ETH balance tersedia
+ Transaction count tersedia
+ Inflow tersedia jika provider mendukung
+ Outflow tersedia jika provider mendukung
+ Net flow dihitung dengan benar
+ Wallet activity tersedia
+ Transaction classification tersedia
+ Activity chart tersedia
+ Wallet ranking tersedia
+ Ranking menggunakan metric objektif
+ Ethereum Mainnet didukung
+ Sepolia didukung
+ Network ditampilkan dengan jelas
+ Explorer links tersedia
+ Loading state tersedia
+ Error state tersedia
+ Empty state tersedia
+ Unsupported network state tersedia
+ Manual refresh tersedia
+ Caching tersedia
+ API key tetap server-side
+ Tidak ada fake blockchain data
+ Tidak ada private key handling
+ Tidak ada seed phrase handling
+ Tidak ada transaction signing
+ Tidak ada buy/sell recommendation
+ Tidak ada automated trading
+ Responsive pada desktop
+ Responsive pada mobile
+ npm run lint berhasil
+ npm run build berhasil
+ Vercel-compatible
+5.33 V0.5 Definition of Done
+
+V0.5 dianggap selesai ketika Smart Money Intelligence telah terintegrasi dengan NEXORA tanpa merusak fitur V0.1–V0.4.
+
+Fitur harus menggunakan data blockchain nyata, memiliki error handling yang jelas, tidak menggunakan fake blockchain data, dan tetap bersifat read-only.
+
+Setelah V0.5 selesai, milestone berikutnya adalah:
+
+V0.6 — Paper Trading
+
+yang akan memperkenalkan simulasi trading tanpa menggunakan dana nyata dan tanpa mengirim transaksi ke blockchain.
+
+
+# NEXORA — V0.6 PAPER TRADING
+
+## 1. OVERVIEW
+
+NEXORA V0.6 menambahkan modul Paper Trading sebagai simulator trading berbasis data market real-time dari sistem market API NEXORA.
+
+Paper Trading memungkinkan user melakukan simulasi Buy dan Sell menggunakan virtual balance tanpa menggunakan uang sungguhan dan tanpa melakukan transaksi blockchain.
+
+V0.6 harus terintegrasi dengan:
+
+- V0.2 Real Market Data
+- V0.3 Wallet Connection
+- V0.4 Wallet Explorer
+- V0.5 Smart Money
+
+Namun Paper Trading tetap merupakan simulator terpisah dari wallet dan blockchain.
+
+---
+
+# 2. GOALS
+
+V0.6 harus menyediakan:
+
+1. Paper Trading dashboard.
+2. Virtual trading balance.
+3. Simulated Buy.
+4. Simulated Sell.
+5. Open positions.
+6. Position size.
+7. Entry price.
+8. Current market price.
+9. Unrealized PnL.
+10. Realized PnL.
+11. Trade history.
+12. Portfolio summary.
+13. Basic trading statistics.
+14. Reset paper trading account.
+15. Real market price dari API NEXORA.
+16. Persistent paper trading state pada browser.
+
+---
+
+# 3. NON-GOALS
+
+Jangan implementasikan:
+
+- Real trading.
+- Blockchain transaction.
+- Transaction signing.
+- Private key.
+- Seed phrase.
+- Smart contract execution.
+- Wallet balance untuk modal trading.
+- Copy trading.
+- AI trading signal.
+- Buy/sell recommendation.
+- Automated trading bot.
+- Leverage.
+- Margin trading.
+- Futures.
+- Options.
+- Token intelligence.
+- Advanced PnL analytics.
+- Backend database.
+- Authentication system.
+- Payment.
+- V0.7 Risk Terminal.
+
+V0.6 hanya PAPER TRADING.
+
+---
+
+# 4. ROUTE
+
+Tambahkan:
+
+```text
+/paper-trading
+Route harus menjadi halaman utama Paper Trading NEXORA.
+
+5. PAPER TRADING ACCOUNT
+
+Saat pertama kali membuka Paper Trading, user mendapatkan akun simulasi dengan:
+
+Initial Balance: $10,000
+
+Balance harus berupa virtual balance.
+
+Tidak boleh mengambil balance dari wallet user.
+
+Contoh:
+
+Starting Balance
+$10,000.00
+
+User dapat melakukan reset sehingga kembali ke:
+
+$10,000.00
+6. MARKET DATA
+
+Paper Trading harus menggunakan market price dari API market NEXORA yang sudah dibuat pada V0.2.
+
+Jangan membuat harga crypto palsu jika market API tersedia.
+
+Asset minimal:
+
+BTC
+ETH
+SOL
+AAVE
+UNI
+
+Gunakan architecture market API yang sudah ada.
+
+Paper Trading harus membaca:
+
+symbol
+price
+price change
+
+Jika market API gagal:
+
+tampilkan error state
+jangan membuat fake price
+jangan membuat transaksi dengan harga yang tidak valid
+7. TRADING PANEL
+
+Buat trading panel pada:
+
+/paper-trading
+
+Panel harus menyediakan:
+
+Asset
+Side
+Amount
+Estimated Price
+Estimated Value
+Execute
+
+Side:
+
+BUY
+SELL
+
+User dapat memilih asset.
+
+Contoh:
+
+BTC
+ETH
+SOL
+AAVE
+UNI
+8. BUY SIMULATION
+
+Ketika user melakukan BUY:
+
+Contoh:
+
+ETH Price = $2,500
+
+Amount = 1 ETH
+
+Cost = $2,500
+
+Jika virtual balance cukup:
+
+Balance -= $2,500
+
+Kemudian position dibuat atau ditambahkan.
+
+Position:
+
+ETH
+Quantity: 1
+Average Entry: $2,500
+
+Jika balance tidak cukup:
+
+Insufficient Balance
+
+Transaksi tidak boleh dibuat.
+
+9. SELL SIMULATION
+
+User hanya dapat SELL asset yang memiliki open position.
+
+Contoh:
+
+ETH Position
+Quantity: 2 ETH
+
+User menjual:
+
+1 ETH
+
+Maka:
+
+Position = 1 ETH
+
+Value hasil penjualan dikembalikan ke virtual balance.
+
+Jika user mencoba menjual lebih banyak dari quantity yang dimiliki:
+
+Insufficient Position
+
+Transaksi tidak boleh dibuat.
+
+10. POSITION MANAGEMENT
+
+Setiap open position harus memiliki:
+
+interface PaperPosition {
+  id: string;
+  symbol: string;
+  quantity: number;
+  averageEntryPrice: number;
+  currentPrice: number;
+  marketValue: number;
+  unrealizedPnl: number;
+  unrealizedPnlPercent: number;
+}
+
+Position harus dihitung berdasarkan market price terbaru.
+
+11. AVERAGE ENTRY PRICE
+
+Jika user membeli asset beberapa kali:
+
+Contoh:
+
+BUY 1 ETH @ $2,000
+BUY 1 ETH @ $3,000
+
+Maka:
+
+Quantity = 2 ETH
+Average Entry = $2,500
+
+Gunakan weighted average:
+
+averageEntry =
+(total cost) / total quantity
+
+Jangan menggunakan transaksi terakhir sebagai entry price.
+
+12. UNREALIZED PNL
+
+Unrealized PnL:
+
+(current price - average entry price) × quantity
+
+Contoh:
+
+Entry = $2,500
+Current = $2,700
+Quantity = 2
+
+Maka:
+
+Unrealized PnL = $400
+
+Persentase:
+
+(current price - average entry) / average entry × 100
+13. REALIZED PNL
+
+Ketika position ditutup atau sebagian dijual:
+
+Realized PnL =
+(sell price - average entry price) × sold quantity
+
+Contoh:
+
+Entry = $2,500
+Sell = $2,700
+Quantity = 1
+
+Maka:
+
+Realized PnL = +$200
+
+Realized PnL harus disimpan dalam trading statistics.
+
+14. TRADE HISTORY
+
+Tampilkan seluruh transaksi simulasi.
+
+Interface:
+
+interface PaperTrade {
+  id: string;
+  timestamp: string;
+  symbol: string;
+  side: "BUY" | "SELL";
+  quantity: number;
+  price: number;
+  totalValue: number;
+  realizedPnl?: number;
+}
+
+Table minimal:
+
+Time
+Asset
+Side
+Quantity
+Price
+Value
+PnL
+
+Gunakan newest-first.
+
+15. PORTFOLIO SUMMARY
+
+Bagian atas dashboard harus menampilkan:
+
+Total Equity
+Available Balance
+Invested Value
+Unrealized PnL
+Realized PnL
+Total Equity
+Available Balance + Market Value of Positions
+Available Balance
+
+Virtual cash yang belum digunakan.
+
+Invested Value
+
+Total market value seluruh open positions.
+
+Unrealized PnL
+
+Total unrealized PnL seluruh positions.
+
+Realized PnL
+
+Total realized PnL dari transaksi SELL.
+
+16. PERFORMANCE STATISTICS
+
+Tambahkan statistik sederhana:
+
+Total Trades
+Winning Trades
+Losing Trades
+Win Rate
+Total Realized PnL
+
+Win Rate:
+
+Winning Trades / Closed Trades × 100
+
+Jika belum ada closed trade:
+
+—
+
+Jangan memberikan rating atau rekomendasi performa trading.
+
+17. OPEN POSITIONS TABLE
+
+Tampilkan:
+
+Asset
+Quantity
+Avg Entry
+Current Price
+Market Value
+Unrealized PnL
+PnL %
+
+Position dengan quantity 0 harus dihapus dari open positions.
+
+18. EMPTY STATE
+
+Jika belum ada position:
+
+NO OPEN POSITIONS
+
+Jika belum ada trade:
+
+NO TRADING ACTIVITY
+
+UI harus tetap terlihat seperti terminal profesional.
+
+19. RESET ACCOUNT
+
+Tambahkan tombol:
+
+RESET PAPER ACCOUNT
+
+Sebelum reset, tampilkan confirmation.
+
+Reset harus menghapus:
+
+Open positions
+Trade history
+Realized PnL
+Statistics
+
+Dan mengembalikan:
+
+Virtual Balance = $10,000
+
+Reset tidak boleh memengaruhi:
+
+Wallet
+Blockchain
+Market data
+Smart Money
+User wallet connection
+20. DATA PERSISTENCE
+
+Paper trading state harus persistent di browser.
+
+Gunakan:
+
+localStorage
+
+atau mekanisme client-side storage yang sudah tersedia.
+
+State minimal:
+
+balance
+positions
+trades
+realizedPnl
+
+Ketika browser di-refresh:
+
+Paper trading state tetap ada.
+
+Tidak perlu database atau authentication pada V0.6.
+
+21. WALLET INDEPENDENCE
+
+Paper Trading tidak bergantung pada wallet.
+
+User tetap dapat menggunakan:
+
+Paper Trading
+
+walaupun wallet belum connect.
+
+Jangan mengambil:
+
+ETH balance
+wallet balance
+wallet token balance
+
+sebagai modal paper trading.
+
+Modal selalu:
+
+$10,000 virtual balance
+22. API / DATA ARCHITECTURE
+
+Gunakan market API yang sudah tersedia.
+
+Jangan membuat API blockchain baru untuk Paper Trading.
+
+Jika membutuhkan helper baru, buat reusable utility.
+
+Contoh struktur:
+
+src/lib/paper-trading/
+  types.ts
+  storage.ts
+  calculations.ts
+  engine.ts
+
+Struktur boleh disesuaikan dengan architecture existing selama tetap clean dan reusable.
+
+23. CALCULATION ENGINE
+
+Pisahkan logic calculation dari UI.
+
+Minimal function:
+
+calculateAverageEntry()
+calculatePositionValue()
+calculateUnrealizedPnl()
+calculateRealizedPnl()
+calculateTotalEquity()
+calculateWinRate()
+
+Calculation harus deterministic dan mudah ditest.
+
+Jangan menaruh seluruh calculation logic langsung di React component.
+
+24. ERROR HANDLING
+
+Handle:
+
+Market API unavailable
+Invalid quantity
+Quantity <= 0
+Insufficient balance
+Insufficient position
+Invalid market price
+localStorage unavailable
+Corrupted localStorage state
+
+Jangan membuat transaksi jika price tidak valid.
+
+25. UX
+
+Trading action harus memberikan feedback.
+
+Contoh:
+
+BUY ETH EXECUTED
+
+atau:
+
+SELL ETH EXECUTED
+
+Error:
+
+INSUFFICIENT BALANCE
+
+Gunakan notification/toast system yang sudah tersedia jika ada.
+
+Jangan install library baru jika tidak diperlukan.
+
+26. DESIGN SYSTEM
+
+Pertahankan visual NEXORA.
+
+Style:
+
+Dark terminal
+Near-black background
+Dark gray cards
+Thin borders
+White/gray typography
+Restrained green/red
+Monospace numbers
+Inter
+JetBrains Mono
+Minimal glow
+Subtle grid
+Professional financial terminal aesthetic
+
+Jangan membuat UI menjadi:
+
+overly neon
+gaming UI
+generic dashboard
+excessive gradients
+27. COLOR SEMANTICS
+
+Gunakan warna secara restrained:
+
+Positive PnL → green
+Negative PnL → red
+Neutral → gray
+BUY → positive/neutral
+SELL → negative/neutral
+
+Jangan menggunakan warna berlebihan.
+
+28. RESPONSIVE
+
+Halaman harus bekerja pada:
+
+Desktop
+Tablet
+Mobile
+
+Pada mobile:
+
+Portfolio summary dapat menjadi stacked cards.
+Trading panel harus tetap usable.
+Table dapat menggunakan horizontal scrolling.
+Tidak boleh terjadi horizontal overflow pada halaman utama.
+29. ACCESSIBILITY
+
+Pastikan:
+
+Button memiliki accessible label.
+Input memiliki label.
+Keyboard navigation bekerja.
+Focus state terlihat.
+Contrast cukup.
+Dialog confirmation dapat ditutup dengan keyboard.
+Tidak bergantung hanya pada warna untuk menunjukkan PnL.
+30. SECURITY
+
+Paper Trading tidak boleh:
+
+meminta private key
+meminta seed phrase
+meminta wallet password
+melakukan signing
+mengirim blockchain transaction
+mengakses dana nyata
+
+Semua trading adalah simulasi.
+
+31. DATA INTEGRITY
+
+Jangan membuat:
+
+fake market price
+fake trade history
+fake PnL
+fake wallet balance
+fake blockchain transaction
+
+Semua harga berasal dari market API.
+
+Semua trade berasal dari tindakan user.
+
+Semua PnL dihitung berdasarkan formula.
+
+32. COMPATIBILITY
+
+V0.6 harus mempertahankan seluruh fitur:
+
+V0.1 Foundation
+V0.2 Market Data
+V0.3 Wallet
+V0.4 Wallet Explorer
+V0.5 Smart Money
+
+Jangan merusak route atau API yang sudah ada.
+
+33. TESTING
+
+Minimal test manual:
+
+Test 1 — Initial Account
+
+Expected:
+
+Balance = $10,000
+Positions = 0
+Trades = 0
+Test 2 — BUY
+
+BUY ETH.
+
+Expected:
+
+Balance berkurang
+ETH position muncul
+Trade history bertambah
+Test 3 — Multiple BUY
+
+BUY asset yang sama dua kali dengan harga berbeda.
+
+Expected:
+
+Average Entry dihitung weighted average.
+Test 4 — SELL
+
+SELL sebagian position.
+
+Expected:
+
+Quantity berkurang
+Balance bertambah
+Realized PnL dihitung
+Test 5 — Invalid SELL
+
+SELL melebihi quantity.
+
+Expected:
+
+Transaction rejected.
+Test 6 — Insufficient Balance
+
+BUY melebihi available balance.
+
+Expected:
+
+Transaction rejected.
+Test 7 — Refresh
+
+Refresh browser.
+
+Expected:
+
+Paper trading state tetap ada.
+Test 8 — Reset
+
+Reset account.
+
+Expected:
+
+Balance = $10,000
+Positions = 0
+Trades = 0
+PnL = 0
+Test 9 — Market Update
+
+Market price berubah.
+
+Expected:
+
+Current Price berubah
+Unrealized PnL ikut berubah
+34. ACCEPTANCE CRITERIA
+
+V0.6 dianggap selesai apabila:
+
+ /paper-trading tersedia.
+ Virtual balance $10,000 tersedia.
+ User dapat BUY asset.
+ User dapat SELL asset.
+ Insufficient balance ditangani.
+ Insufficient position ditangani.
+ Open positions tersedia.
+ Average entry benar.
+ Unrealized PnL benar.
+ Realized PnL benar.
+ Trade history tersedia.
+ Portfolio summary tersedia.
+ Trading statistics tersedia.
+ Reset account tersedia.
+ State tersimpan setelah refresh.
+ Real market data digunakan.
+ Tidak ada real blockchain transaction.
+ Tidak membutuhkan wallet connection.
+ Loading/error/empty state tersedia.
+ Responsive.
+ Accessibility dasar terpenuhi.
+ Tidak ada fake blockchain data.
+ V0.1–V0.5 tetap berfungsi.
+ npm run lint berhasil.
+ npm run build berhasil.
+35. DEFINITION OF DONE
+
+NEXORA V0.6 selesai apabila:
+
+Paper Trading dapat digunakan end-to-end.
+Semua calculation utama benar.
+Market price berasal dari API NEXORA.
+State persistent setelah refresh.
+Tidak ada transaksi nyata.
+Tidak ada private key atau signing.
+UI konsisten dengan NEXORA.
+Tidak merusak V0.1–V0.5.
+Lint berhasil.
+Build berhasil.
+36. NEXT MILESTONE
+
+Setelah V0.6 selesai:
+
+V0.7 — RISK TERMINAL
+
+V0.7 akan menangani risk analytics dan portfolio risk management.
+
+Jangan implementasikan V0.7 pada milestone ini.

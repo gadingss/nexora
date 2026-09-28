@@ -21,8 +21,11 @@ export function formatPercentage(value: number | undefined | null): string {
   return `${sign}${value.toFixed(2)}%`;
 }
 
-export function formatAddress(address: string): string {
-  return `${address.slice(0, 4)}...${address.slice(-3)}`;
+export function formatAddress(address: string | undefined | null): string {
+  if (!address || address === "0x") {
+    return "0x...";
+  }
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
 // Deterministic number formatting without locale

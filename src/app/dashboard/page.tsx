@@ -5,6 +5,7 @@ import { MarketChart } from "@/components/dashboard/market-chart";
 import { MarketTable } from "@/components/dashboard/market-table";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import { DataSourceIndicator } from "@/components/data-source-indicator";
+import { WalletStatus } from "@/components/web3/wallet-status";
 import { marketService } from "@/lib/api/market";
 import { MARKET_STATS } from "@/lib/mock-data/stats";
 import { MARKET_ASSETS } from "@/lib/mock-data/markets";
@@ -73,13 +74,14 @@ export default async function DashboardPage() {
           <div className="lg:col-span-2">
             <MarketChart data={chartData} title="BTC / USD" />
           </div>
-          <div>
-            <div className="bg-[#121212] border border-[#1f1f1f] rounded p-4 mb-4">
+          <div className="space-y-4">
+            <WalletStatus />
+            <div className="bg-[#121212] border border-[#1f1f1f] rounded p-4">
               <span className="text-[10px] font-mono tracking-wider text-zinc-500 uppercase">
-                ON-CHAIN STATUS
+                ON-CHAIN ANALYTICS
               </span>
               <p className="text-xs text-zinc-400 mt-1">
-                Real on-chain indexing coming in V0.4.
+                View real-time wallet analytics in the Wallet Explorer tab.
               </p>
             </div>
             <ActivityFeed activities={WALLET_ACTIVITY} />
